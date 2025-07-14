@@ -1,0 +1,260 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Header } from '@/components/ui/layout/Header';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+import { Clock, Users, Zap, BookOpen } from 'lucide-react';
+
+const subjects = [
+  { id: 'maths', name: 'Mathématiques', icon: '🔢' },
+  { id: 'physics', name: 'Physique', icon: '⚡' },
+  { id: 'chemistry', name: 'Chimie', icon: '🧪' },
+  { id: 'french', name: 'Français', icon: '📝' },
+  { id: 'english', name: 'Anglais', icon: '🇬🇧' },
+  { id: 'history', name: 'Histoire', icon: '📚' },
+  { id: 'philosophy', name: 'Philosophie', icon: '🤔' },
+  { id: 'economics', name: 'Économie', icon: '💰' },
+];
+
+const durations = [
+  { value: '30', label: '30 minutes', price: '15€' },
+  { value: '45', label: '45 minutes', price: '22€' },
+  { value: '60', label: '1 heure', price: '30€' },
+  { value: '90', label: '1h30', price: '45€' },
+];
+
+const urgencyLevels = [
+  { value: 'low', label: 'Dans la semaine', color: 'bg-green-100 text-green-800' },
+  { value: 'medium', label: 'Dans 24h', color: 'bg-yellow-100 text-yellow-800' },
+  { value: 'high', label: 'Maintenant (30 sec)', color: 'bg-red-100 text-red-800' },
+];
+
+export default function RequestLesson() {
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [duration, setDuration] = useState('');
+  const [urgency, setUrgency] = useState('');
+  const [description, setDescription] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    toast({
+      title: "Demande de cours envoyée !",
+      description: urgency === 'high' 
+        ? "Recherche d'un professeur en cours... Vous serez notifié dans 30 secondes."
+        : "Nous vous contacterons bientôt avec des professeurs disponibles.",
+    });
+
+    setIsSubmitting(false);
+    navigate('/student/dashboard');
+  };
+
+  const selectedDuration = durations.find(d => d.value === duration);
+  const selectedUrgencyLevel = urgencyLevels.find(u => u.value === urgency);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Demander un cours
+            </h1>
+            <p className="text-gray-600">
+              Décrivez votre besoin et trouvez le professeur idéal
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Subject selection */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Matière
+                </CardTitle>
+                <CardDescription>
+                  Dans quelle matière avez-vous besoin d'aide ?
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {subjects.map((subject) => (
+                    <button
+                      key={subject.id}
+                      type="button"
+                      onClick={() => setSelectedSubject(subject.id)}
+                      className={`p-4 border rounded-lg text-center transition-colors ${
+                        selectedSubject === subject.id
+                          ? 'border-vup-yellow bg-vup-yellow/10'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="text-2xl mb-2">{subject.icon}</div>
+                      <div className="text-sm font-medium">{subject.name}</div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Duration */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Clock className="mr-2 h-5 w-5" />
+                  Durée du cours
+                </CardTitle>
+                <CardDescription>
+                  Combien de temps souhaitez-vous étudier ?
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {durations.map((d) => (
+                    <button
+                      key={d.value}
+                      type="button"
+                      onClick={() => setDuration(d.value)}
+                      className={`p-4 border rounded-lg text-left transition-colors ${
+                        duration === d.value
+                          ? 'border-vup-yellow bg-vup-yellow/10'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="font-medium">{d.label}</div>
+                      <div className="text-sm text-gray-600">{d.price}</div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Urgency */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Zap className="mr-2 h-5 w-5" />
+                  Urgence
+                </CardTitle>
+                <CardDescription>
+                  Quand avez-vous besoin de ce cours ?
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {urgencyLevels.map((level) => (
+                    <button
+                      key={level.value}
+                      type="button"
+                      onClick={() => setUrgency(level.value)}
+                      className={`w-full p-4 border rounded-lg text-left transition-colors ${
+                        urgency === level.value
+                          ? 'border-vup-yellow bg-vup-yellow/10'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{level.label}</span>
+                        <Badge className={level.color}>
+                          {level.value === 'high' && '🚀'}
+                          {level.value === 'medium' && '⏰'}
+                          {level.value === 'low' && '📅'}
+                        </Badge>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Description */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Description</CardTitle>
+                <CardDescription>
+                  Décrivez précisément votre besoin (optionnel)
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Textarea
+                  placeholder="Ex: J'ai des difficultés avec les équations du second degré, je prépare un contrôle demain..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={4}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Summary and submit */}
+            {selectedSubject && duration && urgency && (
+              <Card className="border-vup-yellow">
+                <CardHeader>
+                  <CardTitle className="text-vup-navy">Récapitulatif</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 mb-6">
+                    <div className="flex justify-between">
+                      <span>Matière :</span>
+                      <span className="font-medium">
+                        {subjects.find(s => s.id === selectedSubject)?.name}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Durée :</span>
+                      <span className="font-medium">{selectedDuration?.label}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Prix :</span>
+                      <span className="font-medium text-vup-navy">{selectedDuration?.price}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Urgence :</span>
+                      <Badge className={selectedUrgencyLevel?.color}>
+                        {selectedUrgencyLevel?.label}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-vup-yellow text-vup-navy hover:bg-vup-yellow/90"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Users className="mr-2 h-4 w-4 animate-spin" />
+                        Recherche en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Zap className="mr-2 h-4 w-4" />
+                        Trouver un professeur
+                      </>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </form>
+        </div>
+      </main>
+    </div>
+  );
+}

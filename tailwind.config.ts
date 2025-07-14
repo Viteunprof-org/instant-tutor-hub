@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// ViteUnProf specific colors
+				vup: {
+					navy: 'hsl(var(--vup-navy))',
+					yellow: 'hsl(var(--vup-yellow))',
+					'light-blue': 'hsl(var(--vup-light-blue))',
+					gray: 'hsl(var(--vup-gray))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
