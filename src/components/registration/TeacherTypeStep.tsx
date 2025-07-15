@@ -54,6 +54,9 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
           <Link to="/login?type=teacher" className="text-accent hover:underline block">
             Se connecter
           </Link>
+          <Link to="/register" className="text-accent hover:underline block">
+            Devenir élève
+          </Link>
         </div>
       </CardContent>
     </Card>
