@@ -107,17 +107,22 @@ const Index = () => {
         </div>
 
         {/* 30 seconds section */}
-        <div className="text-center mb-20">
-          <div className="text-6xl md:text-8xl font-bold text-vup-yellow mb-4">
-            30 secondes.
+        <div className="bg-white py-20 -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="text-center px-4 sm:px-6 lg:px-8">
+            <div className="text-6xl md:text-8xl font-bold text-vup-navy mb-4">
+              30 secondes.
+            </div>
+            <p className="text-xl md:text-2xl text-gray-700">
+              C'est le temps qu'il nous faut pour vous trouver un professeur.
+            </p>
           </div>
-          <p className="text-xl md:text-2xl text-white">
-            C'est le temps qu'il nous faut pour vous trouver un professeur.
-          </p>
         </div>
 
-        {/* Apprenez avec les meilleurs */}
-        <div className="text-center mb-16">
+      </main>
+
+      {/* Apprenez avec les meilleurs - Section bleue */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
             Apprenez avec les meilleurs
           </h2>
@@ -156,13 +161,15 @@ const Index = () => {
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Comment ça marche */}
-        <div className="mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4">
+      {/* Comment ça marche - Section blanche */}
+      <section className="bg-gray-50 py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-vup-navy text-center mb-4">
             Comment ça marche ?
           </h2>
-          <p className="text-xl text-vup-yellow text-center mb-16">
+          <p className="text-xl text-vup-navy text-center mb-16 opacity-80">
             Prendre un cours particulier n'a jamais été aussi simple 📲
           </p>
           
@@ -172,13 +179,13 @@ const Index = () => {
               <div className="bg-vup-yellow text-vup-navy w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 1
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Choisissez</h3>
-              <p className="text-gray-200 mb-6">
+              <h3 className="text-2xl font-bold text-vup-navy mb-4">Choisissez</h3>
+              <p className="text-gray-600 mb-6">
                 Votre matière, la durée du cours et une photo du problème.
               </p>
-              <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                <BookOpen className="h-12 w-12 text-vup-yellow mx-auto mb-2" />
-                <p className="text-sm text-gray-300">Interface simple et intuitive</p>
+              <div className="bg-white rounded-lg p-4 shadow-sm border">
+                <BookOpen className="h-12 w-12 text-vup-navy mx-auto mb-2" />
+                <p className="text-sm text-gray-600">Interface simple et intuitive</p>
               </div>
             </div>
 
@@ -187,12 +194,12 @@ const Index = () => {
               <div className="bg-vup-yellow text-vup-navy w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 2
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Patientez</h3>
-              <p className="text-gray-200 mb-6">
+              <h3 className="text-2xl font-bold text-vup-navy mb-4">Patientez</h3>
+              <p className="text-gray-600 mb-6">
                 Maximum 10 minutes, le temps que votre professeur se connecte.
               </p>
-              <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                <Clock className="h-12 w-12 text-vup-yellow mx-auto mb-2" />
+              <div className="bg-white rounded-lg p-4 shadow-sm border">
+                <Clock className="h-12 w-12 text-vup-navy mx-auto mb-2" />
                 <p className="text-sm text-vup-yellow font-semibold">Temps d'attente moyen de 30 secondes ⚡️</p>
               </div>
             </div>
@@ -202,20 +209,22 @@ const Index = () => {
               <div className="bg-vup-yellow text-vup-navy w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 3
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Apprenez</h3>
-              <p className="text-gray-200 mb-6">
+              <h3 className="text-2xl font-bold text-vup-navy mb-4">Apprenez</h3>
+              <p className="text-gray-600 mb-6">
                 Votre cours peut commencer, demandez tout ce que vous voulez à notre super enseignant.
               </p>
-              <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                <Play className="h-12 w-12 text-vup-yellow mx-auto mb-2" />
-                <p className="text-sm text-gray-300">Cours en visioconférence HD</p>
+              <div className="bg-white rounded-lg p-4 shadow-sm border">
+                <Play className="h-12 w-12 text-vup-navy mx-auto mb-2" />
+                <p className="text-sm text-gray-600">Cours en visioconférence HD</p>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Large choix de matières */}
-        <div className="mb-20">
+      {/* Large choix de matières - Section bleue */}
+      <section className="bg-gradient-to-br from-vup-navy via-primary to-vup-navy py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4">
             Un large choix de matières
           </h2>
@@ -249,10 +258,12 @@ const Index = () => {
             ))}
           </div>
         </div>
+      </section>
 
-        {/* CTA final */}
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">
+      {/* CTA final - Section blanche */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-vup-navy mb-8">
             Commandez votre cours dès maintenant !
           </h2>
           <Link to="/register">
@@ -261,7 +272,7 @@ const Index = () => {
             </Button>
           </Link>
         </div>
-      </main>
+      </section>
     </div>
   );
 };
