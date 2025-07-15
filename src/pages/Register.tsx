@@ -40,7 +40,12 @@ export default function Register() {
   const [searchParams] = useSearchParams();
   const isTeacherFlow = searchParams.get('type') === 'teacher';
   
-  const [step, setStep] = useState(isTeacherFlow ? 'teacher-type' : 'welcome');
+  const [step, setStep] = useState(() => {
+    if (searchParams.get('type') === 'teacher') {
+      return 'teacher-type';
+    }
+    return 'welcome';
+  });
   const [userType, setUserType] = useState<'student' | 'parent' | 'teacher'>('student');
   const [showOnboarding, setShowOnboarding] = useState(false);
   
