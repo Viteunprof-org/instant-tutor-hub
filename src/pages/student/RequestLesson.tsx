@@ -228,69 +228,60 @@ export default function RequestLesson() {
                         </div>
                       </button>
 
-                      {/* Date/Time picker with timeline style */}
+                      {/* Date/Time picker - simple style */}
                       {urgency === level.value && (level.value === 'low' || level.value === 'medium') && (
-                        <div className="relative ml-6 mt-4">
-                          {/* Vertical line */}
-                          <div className="absolute left-0 top-0 w-px h-full bg-vup-yellow"></div>
-                          
-                          {/* Timeline dot */}
-                          <div className="absolute left-0 top-6 w-3 h-3 bg-vup-yellow rounded-full transform -translate-x-1/2"></div>
-                          
-                          {/* Content */}
-                          <div className="pl-6 pb-4">
-                            <div className="space-y-4">
-                              <div>
-                                <Label htmlFor="date-picker" className="text-sm font-medium">Date souhaitée</Label>
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <Button
-                                      variant="outline"
-                                      className={cn(
-                                        "w-full max-w-xs justify-start text-left font-normal mt-2",
-                                        !selectedDate && "text-muted-foreground"
-                                      )}
-                                    >
-                                      <CalendarIcon className="mr-2 h-4 w-4" />
-                                      {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Sélectionner une date"}
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent className="w-auto p-0" align="start">
-                                    <Calendar
-                                      mode="single"
-                                      selected={selectedDate}
-                                      onSelect={setSelectedDate}
-                                      disabled={(date) => {
-                                        const today = new Date();
-                                        const maxDate = new Date();
-                                        maxDate.setDate(today.getDate() + (urgency === 'medium' ? 1 : 7));
-                                        return date < today || date > maxDate;
-                                      }}
-                                      initialFocus
-                                      className={cn("p-3 pointer-events-auto")}
-                                    />
-                                  </PopoverContent>
-                                </Popover>
-                              </div>
-
-                              {selectedDate && (
-                                <div>
-                                  <Label htmlFor="time-picker" className="text-sm font-medium">Heure souhaitée</Label>
-                                  <Select value={selectedTime} onValueChange={setSelectedTime}>
-                                    <SelectTrigger className="w-full max-w-xs mt-2">
-                                      <SelectValue placeholder="Sélectionner une heure" />
-                                    </SelectTrigger>
-                                    <SelectContent className="max-h-60">
-                                      {timeSlots.map((time) => (
-                                        <SelectItem key={time} value={time}>
-                                          {time}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                              )}
+                        <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                          <div className="space-y-3">
+                            <div>
+                              <Label htmlFor="date-picker" className="text-sm font-medium">Date souhaitée</Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "w-full max-w-xs justify-start text-left font-normal mt-1",
+                                      !selectedDate && "text-muted-foreground"
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Sélectionner une date"}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                  <Calendar
+                                    mode="single"
+                                    selected={selectedDate}
+                                    onSelect={setSelectedDate}
+                                    disabled={(date) => {
+                                      const today = new Date();
+                                      const maxDate = new Date();
+                                      maxDate.setDate(today.getDate() + (urgency === 'medium' ? 1 : 7));
+                                      return date < today || date > maxDate;
+                                    }}
+                                    initialFocus
+                                    className={cn("p-3 pointer-events-auto")}
+                                  />
+                                </PopoverContent>
+                              </Popover>
                             </div>
+
+                            {selectedDate && (
+                              <div>
+                                <Label htmlFor="time-picker" className="text-sm font-medium">Heure souhaitée</Label>
+                                <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                  <SelectTrigger className="w-full max-w-xs mt-1">
+                                    <SelectValue placeholder="Sélectionner une heure" />
+                                  </SelectTrigger>
+                                  <SelectContent className="max-h-60">
+                                    {timeSlots.map((time) => (
+                                      <SelectItem key={time} value={time}>
+                                        {time}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -319,9 +310,6 @@ export default function RequestLesson() {
                 {/* Image upload section */}
                 <div>
                   <div className="flex items-center space-x-3">
-                    <Label htmlFor="image-upload" className="text-sm font-medium">
-                      Ajouter des images (optionnel)
-                    </Label>
                     <input
                       id="image-upload"
                       type="file"
@@ -335,7 +323,7 @@ export default function RequestLesson() {
                       className="cursor-pointer flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
                     >
                       <Upload className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">Parcourir</span>
+                      <span className="text-sm text-gray-600">Ajouter des images</span>
                     </Label>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">PNG, JPG jusqu'à 5MB chacune</p>
