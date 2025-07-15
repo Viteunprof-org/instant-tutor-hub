@@ -107,12 +107,12 @@ const Index = () => {
         </div>
 
         {/* 30 seconds section */}
-        <div className="bg-white py-20 -mx-4 sm:-mx-6 lg:-mx-8">
+        <div className="bg-white py-12 -mx-4 sm:-mx-6 lg:-mx-8">
           <div className="text-center px-4 sm:px-6 lg:px-8">
-            <div className="text-6xl md:text-8xl font-bold text-vup-navy mb-4">
+            <div className="text-4xl md:text-6xl font-bold text-vup-navy mb-4">
               30 secondes.
             </div>
-            <p className="text-xl md:text-2xl text-gray-700">
+            <p className="text-lg md:text-xl text-gray-700">
               C'est le temps qu'il nous faut pour vous trouver un professeur.
             </p>
           </div>
