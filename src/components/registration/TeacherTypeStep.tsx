@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, GraduationCap, BookOpen } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface TeacherTypeStepProps {
@@ -13,14 +13,12 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <div className="flex items-center justify-between mb-4">
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={onBack}
-            className="flex items-center text-muted-foreground hover:text-foreground p-1"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
-          </Button>
+          </button>
           <div className="flex items-center space-x-1">
             <span className="text-2xl font-bold text-vup-navy">vite</span>
             <span className="text-2xl font-bold text-vup-yellow">un</span>
@@ -38,7 +36,6 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
           onClick={() => onSelectType('student-teacher')}
           className="w-full h-12 bg-teal-400 hover:bg-teal-500 text-white font-medium"
         >
-          <GraduationCap className="mr-2 h-5 w-5" />
           Professeur étudiant
         </Button>
         
@@ -46,7 +43,6 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
           onClick={() => onSelectType('professional-teacher')}
           className="w-full h-12 bg-slate-800 hover:bg-slate-900 text-white font-medium"
         >
-          <BookOpen className="mr-2 h-5 w-5" />
           Professionnel de l'enseignement
         </Button>
         
