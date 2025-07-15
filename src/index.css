@@ -8,55 +8,42 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Modern 2025 color scheme */
-    --background: 0 0% 98%;
-    --foreground: 220 9% 9%;
+    /* ViteUnProf color scheme */
+    --background: 0 0% 100%;
+    --foreground: 215 25% 27%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 9% 9%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 9% 9%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 220 91% 15%; /* Deep modern blue */
+    --primary: 215 100% 14%; /* Dark blue from ViteUnProf */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 9% 9%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 215 25% 27%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 45 93% 47%; /* Refined golden accent */
-    --accent-foreground: 220 91% 15%;
+    --accent: 45 100% 51%; /* Yellow accent from ViteUnProf */
+    --accent-foreground: 215 100% 14%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 45 93% 47%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 45 100% 51%;
 
-    /* Modern design tokens */
-    --vup-navy: 220 91% 15%;
-    --vup-gold: 45 93% 47%;
-    --vup-light: 220 43% 98%;
-    --vup-gray: 220 9% 46%;
-    --vup-glass: 220 43% 98% / 0.7;
+    /* Custom ViteUnProf specific colors */
+    --vup-navy: 215 100% 14%;
+    --vup-yellow: 45 100% 51%;
+    --vup-light-blue: 210 100% 97%;
+    --vup-gray: 215 16% 47%;
 
-    /* Advanced gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220 91% 15%) 0%, hsl(220 91% 20%) 50%, hsl(220 91% 15%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(50 93% 52%) 100%);
-    --gradient-surface: linear-gradient(135deg, hsl(220 43% 98% / 0.9) 0%, hsl(220 43% 96% / 0.7) 100%);
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(45 93% 47% / 0.15) 0%, transparent 70%);
-
-    /* Shadows */
-    --shadow-soft: 0 1px 3px hsl(220 91% 15% / 0.05), 0 1px 2px hsl(220 91% 15% / 0.1);
-    --shadow-medium: 0 4px 6px hsl(220 91% 15% / 0.05), 0 2px 4px hsl(220 91% 15% / 0.06);
-    --shadow-large: 0 10px 15px hsl(220 91% 15% / 0.1), 0 4px 6px hsl(220 91% 15% / 0.05);
-    --shadow-glow: 0 0 40px hsl(45 93% 47% / 0.3);
-
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
 
