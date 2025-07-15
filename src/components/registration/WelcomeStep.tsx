@@ -45,7 +45,7 @@ export default function WelcomeStep({ onSelectUserType }: WelcomeStepProps) {
           <Link to="/login" className="text-accent hover:underline block">
             Se connecter
           </Link>
-          <Link to="/register?type=teacher" className="text-accent hover:underline block">
+          <Link to="/register/teacher" className="text-accent hover:underline block">
             Devenir professeur
           </Link>
         </div>

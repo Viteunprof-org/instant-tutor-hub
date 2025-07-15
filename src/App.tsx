@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+import RegisterStudent from "./pages/RegisterStudent";
+import RegisterTeacher from "./pages/RegisterTeacher";
 import StudentDashboard from "./pages/student/Dashboard";
 import RequestLesson from "./pages/student/RequestLesson";
 import TeacherDashboard from "./pages/teacher/Dashboard";
@@ -42,7 +43,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={user ? <Navigate to={user.type === 'student' ? '/student/dashboard' : '/teacher/dashboard'} replace /> : <Index />} />
       <Route path="/login" element={user ? <Navigate to={user.type === 'student' ? '/student/dashboard' : '/teacher/dashboard'} replace /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to={user.type === 'student' ? '/student/dashboard' : '/teacher/dashboard'} replace /> : <Register />} />
+      <Route path="/register" element={user ? <Navigate to={user.type === 'student' ? '/student/dashboard' : '/teacher/dashboard'} replace /> : <RegisterStudent />} />
+      <Route path="/register/teacher" element={user ? <Navigate to={user.type === 'student' ? '/student/dashboard' : '/teacher/dashboard'} replace /> : <RegisterTeacher />} />
       
       {/* Student routes */}
       <Route path="/student/dashboard" element={

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import WelcomeStep from '@/components/registration/WelcomeStep';
@@ -7,11 +7,6 @@ import BasicInfoStep from '@/components/registration/BasicInfoStep';
 import AdditionalInfoStep from '@/components/registration/AdditionalInfoStep';
 import PasswordStep from '@/components/registration/PasswordStep';
 import OnboardingModal from '@/components/registration/OnboardingModal';
-import TeacherTypeStep from '@/components/registration/TeacherTypeStep';
-import TeacherBasicInfoStep from '@/components/registration/TeacherBasicInfoStep';
-import TeacherSubjectsStep from '@/components/registration/TeacherSubjectsStep';
-import TeacherContactStep from '@/components/registration/TeacherContactStep';
-import TeacherPasswordStep from '@/components/registration/TeacherPasswordStep';
 
 interface FormData {
   firstName: string;
@@ -27,26 +22,11 @@ interface FormData {
   childFirstName?: string;
   childLastName?: string;
   childGrade?: string;
-  // Teacher specific fields
-  teacherType?: 'student-teacher' | 'professional-teacher';
-  subjects?: string[];
-  levels?: string[];
-  whatsappNumber?: string;
-  idDocument?: File | null;
-  addressProof?: File | null;
 }
 
-export default function Register() {
-  const [searchParams] = useSearchParams();
-  const isTeacherFlow = searchParams.get('type') === 'teacher';
-  
-  const [step, setStep] = useState(() => {
-    if (searchParams.get('type') === 'teacher') {
-      return 'teacher-type';
-    }
-    return 'welcome';
-  });
-  const [userType, setUserType] = useState<'student' | 'parent' | 'teacher'>('student');
+export default function RegisterStudent() {
+  const [step, setStep] = useState('welcome');
+  const [userType, setUserType] = useState<'student' | 'parent'>('student');
   const [showOnboarding, setShowOnboarding] = useState(false);
   
   const [formData, setFormData] = useState<FormData>({
@@ -58,30 +38,19 @@ export default function Register() {
     sponsorCode: '',
     password: '',
     confirmPassword: '',
-    subjects: [],
-    levels: [],
-    whatsappNumber: '',
-    idDocument: null,
-    addressProof: null,
   });
 
   const { register, isLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleDataChange = (field: string, value: string | string[] | File | null) => {
+  const handleDataChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleUserTypeSelect = (type: 'student' | 'parent') => {
     setUserType(type);
     setStep('basic-info');
-  };
-
-  const handleTeacherTypeSelect = (type: 'student-teacher' | 'professional-teacher') => {
-    setUserType('teacher');
-    setFormData(prev => ({ ...prev, teacherType: type }));
-    setStep('teacher-basic-info');
   };
 
   const validateBasicInfo = () => {
@@ -100,17 +69,6 @@ export default function Register() {
                     formData.childGrade);
     }
     return Boolean(formData.grade);
-  };
-
-  const validateTeacherSubjects = () => {
-    return formData.subjects && formData.subjects.length > 0 && 
-           formData.levels && formData.levels.length > 0;
-  };
-
-  const validateTeacherContact = () => {
-    return Boolean(formData.whatsappNumber?.trim() && 
-                   formData.idDocument && 
-                   formData.addressProof);
   };
 
   const validatePassword = () => {
@@ -138,7 +96,7 @@ export default function Register() {
       const firstName = userType === 'parent' ? formData.childFirstName! : formData.firstName;
       const lastName = userType === 'parent' ? formData.childLastName! : formData.lastName;
       
-      await register(formData.email, formData.password, firstName, lastName, actualUserType as 'student' | 'teacher', userType === 'teacher' ? undefined : userType as 'student' | 'parent');
+      await register(formData.email, formData.password, firstName, lastName, actualUserType as 'student' | 'teacher', userType as 'student' | 'parent');
       
       toast({
         title: "Inscription réussie",
@@ -146,11 +104,7 @@ export default function Register() {
       });
       
       // Show onboarding modal for student/parent flows
-      if (userType === 'student' || userType === 'parent') {
-        setShowOnboarding(true);
-      } else {
-        navigate('/teacher/dashboard');
-      }
+      setShowOnboarding(true);
     } catch (error) {
       toast({
         title: "Erreur d'inscription",
@@ -165,70 +119,6 @@ export default function Register() {
     navigate('/student/dashboard');
   };
 
-  if (isTeacherFlow) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy flex items-center justify-center p-4">
-        {step === 'teacher-type' && (
-          <TeacherTypeStep
-            onSelectType={handleTeacherTypeSelect}
-            onBack={() => navigate('/register')}
-          />
-        )}
-        
-        {step === 'teacher-basic-info' && (
-          <TeacherBasicInfoStep
-            teacherType={formData.teacherType!}
-            data={formData}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-subjects')}
-            onBack={() => setStep('teacher-type')}
-            isValid={validateBasicInfo()}
-          />
-        )}
-        
-        {step === 'teacher-subjects' && (
-          <TeacherSubjectsStep
-            data={{
-              subjects: formData.subjects || [],
-              levels: formData.levels || []
-            }}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-contact')}
-            onBack={() => setStep('teacher-basic-info')}
-            isValid={validateTeacherSubjects()}
-          />
-        )}
-        
-        {step === 'teacher-contact' && (
-          <TeacherContactStep
-            data={{
-              whatsappNumber: formData.whatsappNumber || '',
-              idDocument: formData.idDocument || null,
-              addressProof: formData.addressProof || null
-            }}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-password')}
-            onBack={() => setStep('teacher-subjects')}
-            isValid={validateTeacherContact()}
-          />
-        )}
-        
-        {step === 'teacher-password' && (
-          <TeacherPasswordStep
-            data={{
-              password: formData.password,
-              confirmPassword: formData.confirmPassword
-            }}
-            onDataChange={handleDataChange}
-            onSubmit={handleSubmit}
-            onBack={() => setStep('teacher-contact')}
-            isValid={validatePassword()}
-            isLoading={isLoading}
-          />
-        )}
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy flex items-center justify-center p-4">
       {step === 'welcome' && (
@@ -237,7 +127,7 @@ export default function Register() {
       
       {step === 'basic-info' && (
         <BasicInfoStep
-          userType={userType as 'student' | 'parent'}
+          userType={userType}
           data={formData}
           onDataChange={handleDataChange}
           onNext={() => setStep('additional-info')}
@@ -248,7 +138,7 @@ export default function Register() {
       
       {step === 'additional-info' && (
         <AdditionalInfoStep
-          userType={userType as 'student' | 'parent'}
+          userType={userType}
           data={formData}
           onDataChange={handleDataChange}
           onNext={() => setStep('password')}
@@ -259,7 +149,7 @@ export default function Register() {
       
       {step === 'password' && (
         <PasswordStep
-          userType={userType as 'student' | 'parent'}
+          userType={userType}
           data={formData}
           onDataChange={handleDataChange}
           onSubmit={handleSubmit}
@@ -272,7 +162,7 @@ export default function Register() {
       <OnboardingModal
         isOpen={showOnboarding}
         onClose={handleOnboardingComplete}
-        userType={userType as 'student' | 'parent'}
+        userType={userType}
       />
     </div>
   );
