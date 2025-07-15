@@ -136,9 +136,8 @@ export default function OnboardingModal({ isOpen, onClose, userType }: Onboardin
 
   const handleNext = () => {
     if (isLastStep) {
-      // Mark onboarding as seen and trigger button animation
+      // Mark onboarding as seen
       localStorage.setItem('vup-onboarding-seen', 'true');
-      localStorage.setItem('vup-animate-button', 'true');
       onClose();
     } else {
       setCurrentStep(currentStep + 1);
