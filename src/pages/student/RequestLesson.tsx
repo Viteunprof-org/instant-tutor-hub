@@ -8,8 +8,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
-import { Clock, Users, Zap, BookOpen } from 'lucide-react';
+import { Clock, Users, Zap, BookOpen, Upload, X, CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { cn } from '@/lib/utils';
 
 const subjects = [
   { id: 'maths', name: 'Mathématiques', icon: '🔢' },
@@ -40,9 +45,42 @@ export default function RequestLesson() {
   const [duration, setDuration] = useState('');
   const [urgency, setUrgency] = useState('');
   const [description, setDescription] = useState('');
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(file => 
+      file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024 // 5MB max
+    );
+    
+    if (validFiles.length !== files.length) {
+      toast({
+        title: "Certains fichiers ont été ignorés",
+        description: "Seules les images de moins de 5MB sont acceptées.",
+        variant: "destructive"
+      });
+    }
+    
+    setUploadedImages(prev => [...prev, ...validFiles]);
+  };
+
+  const removeImage = (index: number) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleUrgencyChange = (value: string) => {
+    setUrgency(value);
+    // Reset date/time selection when urgency changes
+    if (value === 'high') {
+      setSelectedDate(undefined);
+      setSelectedTime('');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +93,9 @@ export default function RequestLesson() {
       title: "Demande de cours envoyée !",
       description: urgency === 'high' 
         ? "Recherche d'un professeur en cours... Vous serez notifié dans 30 secondes."
-        : "Nous vous contacterons bientôt avec des professeurs disponibles.",
+        : selectedDate 
+          ? `Votre cours est programmé pour le ${format(selectedDate, 'PPPP', { locale: fr })} à ${selectedTime}.`
+          : "Nous vous contacterons bientôt avec des professeurs disponibles.",
     });
 
     setIsSubmitting(false);
@@ -64,6 +104,14 @@ export default function RequestLesson() {
 
   const selectedDuration = durations.find(d => d.value === duration);
   const selectedUrgencyLevel = urgencyLevels.find(u => u.value === urgency);
+
+  // Generate time slots for appointment scheduling
+  const timeSlots = [
+    '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+    '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+    '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
+    '20:00', '20:30', '21:00', '21:30'
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -163,7 +211,7 @@ export default function RequestLesson() {
                     <button
                       key={level.value}
                       type="button"
-                      onClick={() => setUrgency(level.value)}
+                      onClick={() => handleUrgencyChange(level.value)}
                       className={`w-full p-4 border rounded-lg text-left transition-colors ${
                         urgency === level.value
                           ? 'border-vup-yellow bg-vup-yellow/10'
@@ -181,6 +229,64 @@ export default function RequestLesson() {
                     </button>
                   ))}
                 </div>
+
+                {/* Date/Time picker for scheduled lessons */}
+                {(urgency === 'low' || urgency === 'medium') && (
+                  <div className="mt-6 space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex-1">
+                        <Label htmlFor="date-picker">Date souhaitée</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-full justify-start text-left font-normal mt-2",
+                                !selectedDate && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Sélectionner une date"}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={selectedDate}
+                              onSelect={setSelectedDate}
+                              disabled={(date) => {
+                                const today = new Date();
+                                const maxDate = new Date();
+                                maxDate.setDate(today.getDate() + (urgency === 'medium' ? 1 : 7));
+                                return date < today || date > maxDate;
+                              }}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+
+                      {selectedDate && (
+                        <div className="flex-1">
+                          <Label htmlFor="time-picker">Heure souhaitée</Label>
+                          <Select value={selectedTime} onValueChange={setSelectedTime}>
+                            <SelectTrigger className="mt-2">
+                              <SelectValue placeholder="Sélectionner une heure" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-60">
+                              {timeSlots.map((time) => (
+                                <SelectItem key={time} value={time}>
+                                  {time}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -189,16 +295,73 @@ export default function RequestLesson() {
               <CardHeader>
                 <CardTitle>Description</CardTitle>
                 <CardDescription>
-                  Décrivez précisément votre besoin (optionnel)
+                  Décrivez précisément votre besoin et ajoutez des images si nécessaire
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <Textarea
                   placeholder="Ex: J'ai des difficultés avec les équations du second degré, je prépare un contrôle demain..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
                 />
+
+                {/* Image upload section */}
+                <div>
+                  <Label htmlFor="image-upload" className="mb-2 block">
+                    Ajouter des images (optionnel)
+                  </Label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                    <input
+                      id="image-upload"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <Label 
+                      htmlFor="image-upload" 
+                      className="cursor-pointer flex flex-col items-center space-y-2"
+                    >
+                      <Upload className="h-8 w-8 text-gray-400" />
+                      <span className="text-sm text-gray-600">
+                        Cliquez pour ajouter des images ou glissez-déposez
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        PNG, JPG jusqu'à 5MB chacune
+                      </span>
+                    </Label>
+                  </div>
+
+                  {/* Preview uploaded images */}
+                  {uploadedImages.length > 0 && (
+                    <div className="mt-4">
+                      <Label className="mb-2 block">Images ajoutées ({uploadedImages.length})</Label>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {uploadedImages.map((file, index) => (
+                          <div key={index} className="relative group">
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt={`Upload ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                            <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                              {file.name.length > 10 ? `${file.name.substring(0, 10)}...` : file.name}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
 
@@ -226,10 +389,23 @@ export default function RequestLesson() {
                     </div>
                     <div className="flex justify-between">
                       <span>Urgence :</span>
-                      <Badge className={selectedUrgencyLevel?.color}>
-                        {selectedUrgencyLevel?.label}
-                      </Badge>
+                      <div className="text-right">
+                        <Badge className={selectedUrgencyLevel?.color}>
+                          {selectedUrgencyLevel?.label}
+                        </Badge>
+                        {selectedDate && selectedTime && (
+                          <div className="text-sm text-gray-600 mt-1">
+                            {format(selectedDate, "PPPP", { locale: fr })} à {selectedTime}
+                          </div>
+                        )}
+                      </div>
                     </div>
+                    {uploadedImages.length > 0 && (
+                      <div className="flex justify-between">
+                        <span>Images :</span>
+                        <span className="font-medium">{uploadedImages.length} image(s)</span>
+                      </div>
+                    )}
                   </div>
                   
                   <Button 
