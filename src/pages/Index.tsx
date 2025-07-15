@@ -10,6 +10,12 @@ import audencialogo from '@/assets/logos/audencia-logo.png';
 import polytechniquelogo from '@/assets/logos/polytechnique-logo.png';
 import esseclogo from '@/assets/logos/essec-logo.png';
 import sorbonnelogo from '@/assets/logos/sorbonne-logo.png';
+import centralesupeleclogo from '@/assets/logos/centralesupelec-logo.png';
+import sciencespologo from '@/assets/logos/sciencespo-logo.png';
+import mineslogo from '@/assets/logos/mines-logo.png';
+import isaelogo from '@/assets/logos/isae-logo.png';
+import edheclogo from '@/assets/logos/edhec-logo.png';
+import gemlogo from '@/assets/logos/gem-logo.png';
 
 const Index = () => {
   return (
@@ -144,24 +150,42 @@ const Index = () => {
             </div>
 
             {/* Logos à droite */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={centralelogo} alt="École Centrale" className="h-10 max-w-full object-contain" />
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-8 opacity-70">
+              <div className="flex items-center justify-center h-16">
+                <img src={centralesupeleclogo} alt="CentraleSupélec" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={enstalogo} alt="ENSTA Paris" className="h-10 max-w-full object-contain" />
+              <div className="flex items-center justify-center h-16">
+                <img src={enstalogo} alt="ENSTA ParisTech" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={audencialogo} alt="Audencia Business School" className="h-10 max-w-full object-contain" />
+              <div className="flex items-center justify-center h-16">
+                <img src={audencialogo} alt="Audencia" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={polytechniquelogo} alt="École Polytechnique" className="h-10 max-w-full object-contain" />
+              <div className="flex items-center justify-center h-16">
+                <img src={polytechniquelogo} alt="École Polytechnique" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={esseclogo} alt="ESSEC Business School" className="h-10 max-w-full object-contain" />
+              <div className="flex items-center justify-center h-16">
+                <img src={esseclogo} alt="ESSEC Business School" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
-              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
-                <img src={sorbonnelogo} alt="Sorbonne Université" className="h-10 max-w-full object-contain" />
+              <div className="flex items-center justify-center h-16">
+                <img src={mineslogo} alt="Mines ParisTech" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={isaelogo} alt="ISAE SUPAERO" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={centralelogo} alt="Centrale Marseille" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={sorbonnelogo} alt="Sorbonne Université" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={gemlogo} alt="Grenoble École de Management" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={sciencespologo} alt="Sciences Po" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              </div>
+              <div className="flex items-center justify-center h-16">
+                <img src={edheclogo} alt="EDHEC Business School" className="h-8 max-w-full object-contain filter brightness-0 invert" />
               </div>
             </div>
           </div>
