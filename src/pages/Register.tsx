@@ -161,65 +161,19 @@ export default function Register() {
   };
 
   // Teacher registration flow
+  console.log('isTeacherFlow:', isTeacherFlow, 'step:', step);
+  
   if (isTeacherFlow) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy flex items-center justify-center p-4">
-        {step === 'teacher-type' && (
-          <TeacherTypeStep 
-            onSelectType={handleTeacherTypeSelect}
-            onBack={() => navigate('/login')}
-          />
-        )}
-        
-        {step === 'teacher-basic-info' && (
-          <TeacherBasicInfoStep
-            teacherType={formData.teacherType!}
-            data={formData}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-subjects')}
-            onBack={() => setStep('teacher-type')}
-            isValid={validateBasicInfo()}
-          />
-        )}
-        
-        {step === 'teacher-subjects' && (
-          <TeacherSubjectsStep
-            data={{ subjects: formData.subjects || [], levels: formData.levels || [] }}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-contact')}
-            onBack={() => setStep('teacher-basic-info')}
-            isValid={validateTeacherSubjects()}
-          />
-        )}
-        
-        {step === 'teacher-contact' && (
-          <TeacherContactStep
-            data={{
-              whatsappNumber: formData.whatsappNumber || '',
-              idDocument: formData.idDocument || null,
-              addressProof: formData.addressProof || null
-            }}
-            onDataChange={handleDataChange}
-            onNext={() => setStep('teacher-password')}
-            onBack={() => setStep('teacher-subjects')}
-            isValid={validateTeacherContact()}
-          />
-        )}
-        
-        {step === 'teacher-password' && (
-          <TeacherPasswordStep
-            data={formData}
-            onDataChange={handleDataChange}
-            onSubmit={handleSubmit}
-            onBack={() => setStep('teacher-contact')}
-            isValid={validatePassword()}
-            isLoading={isLoading}
-          />
-        )}
+      <div className="min-h-screen bg-blue-900 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-lg">
+          <h1>Test Teacher Registration</h1>
+          <p>Step: {step}</p>
+          <p>isTeacherFlow: {String(isTeacherFlow)}</p>
+        </div>
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy flex items-center justify-center p-4">
       {step === 'welcome' && (
