@@ -4,6 +4,7 @@ export interface User {
   firstName: string;
   lastName: string;
   type: 'student' | 'teacher';
+  parentType?: 'student' | 'parent'; // For students: who registered them
   avatar?: string;
   createdAt: Date;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/ui/layout/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { Clock, BookOpen, Calendar, Plus, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import OnboardingModal from '@/components/registration/OnboardingModal';
 
 // Mock data
 const recentLessons = [
@@ -48,11 +49,25 @@ const stats = {
 };
 
 export default function StudentDashboard() {
-  const { user } = useAuth();
+  const { user, isFirstLogin, setIsFirstLogin } = useAuth();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (isFirstLogin && user?.type === 'student') {
+      setShowOnboarding(true);
+    }
+  }, [isFirstLogin, user]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    setIsFirstLogin(false);
+    localStorage.setItem('vup-onboarding-seen', 'true');
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome section */}
@@ -238,5 +253,12 @@ export default function StudentDashboard() {
         </div>
       </main>
     </div>
+    
+    <OnboardingModal
+      isOpen={showOnboarding}
+      onClose={handleOnboardingComplete}
+      userType={user?.parentType || 'student'}
+    />
+    </>
   );
 }

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/ui/layout/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/contexts/AuthContext';
+import OnboardingModal from '@/components/registration/OnboardingModal';
 import { 
   Clock, 
   BookOpen, 
@@ -70,8 +71,21 @@ const stats = {
 };
 
 export default function TeacherDashboard() {
-  const { user } = useAuth();
+  const { user, isFirstLogin, setIsFirstLogin } = useAuth();
   const [isAvailable, setIsAvailable] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (isFirstLogin && user?.type === 'teacher') {
+      setShowOnboarding(true);
+    }
+  }, [isFirstLogin, user]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    setIsFirstLogin(false);
+    localStorage.setItem('vup-onboarding-seen', 'true');
+  };
 
   const handleAcceptRequest = (requestId: string) => {
     // Handle accept logic
@@ -84,8 +98,9 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome section */}
@@ -310,5 +325,12 @@ export default function TeacherDashboard() {
         </div>
       </main>
     </div>
+    
+    <OnboardingModal
+      isOpen={showOnboarding}
+      onClose={handleOnboardingComplete}
+      userType="student" // Teachers don't have parent/student distinction for onboarding
+    />
+    </>
   );
 }

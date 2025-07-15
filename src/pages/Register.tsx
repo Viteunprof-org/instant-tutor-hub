@@ -99,7 +99,7 @@ export default function Register() {
       const firstName = userType === 'parent' ? formData.childFirstName! : formData.firstName;
       const lastName = userType === 'parent' ? formData.childLastName! : formData.lastName;
       
-      await register(formData.email, formData.password, firstName, lastName, actualUserType as 'student' | 'teacher');
+      await register(formData.email, formData.password, firstName, lastName, actualUserType as 'student' | 'teacher', userType === 'teacher' ? undefined : userType as 'student' | 'parent');
       
       toast({
         title: "Inscription réussie",

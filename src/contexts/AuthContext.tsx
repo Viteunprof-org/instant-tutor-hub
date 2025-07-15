@@ -5,8 +5,10 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, userType: 'student' | 'teacher') => Promise<void>;
   logout: () => void;
-  register: (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher') => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent') => Promise<void>;
   isLoading: boolean;
+  isFirstLogin: boolean;
+  setIsFirstLogin: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -14,12 +16,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
 
   useEffect(() => {
     // Simulate loading user from localStorage or API
     const savedUser = localStorage.getItem('vup-user');
+    const hasSeenOnboarding = localStorage.getItem('vup-onboarding-seen');
+    
     if (savedUser) {
       setUser(JSON.parse(savedUser));
+      setIsFirstLogin(!hasSeenOnboarding);
     }
     setIsLoading(false);
   }, []);
@@ -42,10 +48,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     setUser(mockUser);
     localStorage.setItem('vup-user', JSON.stringify(mockUser));
+    
+    // Check if user has seen onboarding
+    const hasSeenOnboarding = localStorage.getItem('vup-onboarding-seen');
+    setIsFirstLogin(!hasSeenOnboarding);
+    
     setIsLoading(false);
   };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher') => {
+  const register = async (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent') => {
     setIsLoading(true);
     
     // Simulate API call
@@ -57,22 +68,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       firstName,
       lastName,
       type: userType,
+      parentType,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
       createdAt: new Date(),
     };
     
     setUser(mockUser);
     localStorage.setItem('vup-user', JSON.stringify(mockUser));
+    
+    // After registration, user should see onboarding
+    setIsFirstLogin(true);
+    
     setIsLoading(false);
   };
 
   const logout = () => {
     setUser(null);
+    setIsFirstLogin(false);
     localStorage.removeItem('vup-user');
+    localStorage.removeItem('vup-onboarding-seen');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, isLoading }}>
+    <AuthContext.Provider value={{ user, login, logout, register, isLoading, isFirstLogin, setIsFirstLogin }}>
       {children}
     </AuthContext.Provider>
   );
