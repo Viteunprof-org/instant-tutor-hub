@@ -47,18 +47,6 @@ const studentOnboardingSteps = [
         description: "Nous avons à cœur de construire un produit que les étudiants adorent. Au moindre problème, contacte-nous."
       }
     ]
-  },
-  {
-    title: "Les notifications",
-    icon: <Bell className="w-8 h-8 text-vup-yellow" />,
-    content: [
-      {
-        icon: <Bell className="w-6 h-6 text-vup-yellow" />,
-        title: "Active les notifications",
-        description: "Pas de panique, elles sont rares, mais essentielles pour prendre des cours."
-      }
-    ],
-    note: "(On s'en sert aussi pour t'offrir des cours de temps en temps)"
   }
 ] as Array<{
   title: string;
@@ -154,10 +142,6 @@ export default function OnboardingModal({ isOpen, onClose, userType }: Onboardin
     }
   };
 
-  const handleSkip = () => {
-    onClose();
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md border-0 p-0 bg-transparent">
@@ -222,16 +206,6 @@ export default function OnboardingModal({ isOpen, onClose, userType }: Onboardin
                   />
                 ))}
               </div>
-
-              {!isLastStep && (
-                <Button 
-                  variant="ghost" 
-                  onClick={handleSkip}
-                  className="w-full text-muted-foreground hover:text-foreground"
-                >
-                  Passer
-                </Button>
-              )}
             </div>
           </CardContent>
         </Card>
