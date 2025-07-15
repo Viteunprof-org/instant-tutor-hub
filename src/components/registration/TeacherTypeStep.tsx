@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, GraduationCap, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -11,37 +11,32 @@ interface TeacherTypeStepProps {
 export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeStepProps) {
   return (
     <Card className="w-full max-w-md">
-      <CardHeader>
-        <div className="flex items-center space-x-2 mb-2">
+      <CardHeader className="space-y-1">
+        <div className="flex items-center justify-between mb-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={onBack}
-            className="p-1"
+            className="flex items-center text-muted-foreground hover:text-foreground p-1"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex items-center space-x-1">
-            <span className="text-sm font-bold text-muted-foreground">vite</span>
-            <span className="text-sm font-bold text-vup-yellow">un</span>
-            <span className="text-sm font-bold text-muted-foreground">prof</span>
+            <span className="text-2xl font-bold text-vup-navy">vite</span>
+            <span className="text-2xl font-bold text-vup-yellow">un</span>
+            <span className="text-2xl font-bold text-vup-navy">prof</span>
           </div>
+          <div></div>
         </div>
-        <CardTitle className="text-center text-xl mb-2">
-          Bienvenue
-        </CardTitle>
-        <p className="text-center text-muted-foreground text-sm mb-4">
+        <CardTitle className="text-2xl text-center">Bienvenue</CardTitle>
+        <CardDescription className="text-center">
           Choisissez votre profil pour commencer
-        </p>
-        <CardTitle className="text-center text-lg">
-          Devenir professeur
-        </CardTitle>
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button
           onClick={() => onSelectType('student-teacher')}
-          className="w-full h-14 bg-teal-400 hover:bg-teal-500 text-white font-medium"
-          size="lg"
+          className="w-full h-12 bg-teal-400 hover:bg-teal-500 text-white font-medium"
         >
           <GraduationCap className="mr-2 h-5 w-5" />
           Professeur étudiant
@@ -49,15 +44,14 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
         
         <Button
           onClick={() => onSelectType('professional-teacher')}
-          className="w-full h-14 bg-slate-800 hover:bg-slate-900 text-white font-medium"
-          size="lg"
+          className="w-full h-12 bg-slate-800 hover:bg-slate-900 text-white font-medium"
         >
           <BookOpen className="mr-2 h-5 w-5" />
           Professionnel de l'enseignement
         </Button>
         
-        <div className="text-center mt-6">
-          <Link to="/login?type=teacher" className="text-blue-500 hover:underline text-sm">
+        <div className="mt-6 text-center text-sm space-y-2">
+          <Link to="/login?type=teacher" className="text-accent hover:underline block">
             Se connecter
           </Link>
         </div>
