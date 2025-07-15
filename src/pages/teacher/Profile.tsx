@@ -17,8 +17,26 @@ import {
   CheckCircle2,
   Edit,
   Save,
-  X
+  X,
+  Plus,
+  Trash2
 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+
+// Available subjects and levels
+const AVAILABLE_SUBJECTS = [
+  'Mathématiques', 'Français', 'Anglais', 'Espagnol', 'Allemand', 'Italien',
+  'Physique', 'Chimie', 'SVT', 'Histoire', 'Géographie', 'Philosophie',
+  'Économie', 'Informatique', 'Arts plastiques', 'Musique', 'Sport'
+];
+
+const AVAILABLE_LEVELS = [
+  'CP', 'CE1', 'CE2', 'CM1', 'CM2', 
+  '6ème', '5ème', '4ème', '3ème', 
+  '2nde', '1ère', 'Terminale', 
+  'BTS', 'Licence', 'Master'
+];
 
 // Mock teacher profile data
 const mockTeacherProfile = {
@@ -26,11 +44,14 @@ const mockTeacherProfile = {
   lastName: 'Dupont',
   email: 'jean.dupont@email.com',
   phone: '+33 6 12 34 56 78',
-  subjects: ['Mathématiques', 'Physique', 'Chimie'],
+  subjects: [
+    { name: 'Mathématiques', levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1ère', 'Terminale'] },
+    { name: 'Physique', levels: ['2nde', '1ère', 'Terminale'] },
+    { name: 'Chimie', levels: ['2nde', '1ère', 'Terminale'] }
+  ],
   education: 'Master en Mathématiques Appliquées',
   school: 'École Polytechnique',
   experience: '5 ans d\'expérience en cours particuliers',
-  hourlyRate: 25,
   biography: 'Professeur passionné avec 5 ans d\'expérience dans l\'enseignement des mathématiques et des sciences. J\'adapte mes méthodes pédagogiques aux besoins de chaque élève pour assurer leur réussite.',
   isVerified: true,
   isWhatsAppConnected: true,
@@ -182,20 +203,6 @@ export default function TeacherProfile() {
                     )}
                   </div>
                   
-                  <div>
-                    <Label htmlFor="hourlyRate">Tarif horaire (€)</Label>
-                    {isEditing ? (
-                      <Input
-                        id="hourlyRate"
-                        type="number"
-                        value={editedProfile.hourlyRate}
-                        onChange={(e) => setEditedProfile(prev => ({ ...prev, hourlyRate: Number(e.target.value) }))}
-                        className="mt-1"
-                      />
-                    ) : (
-                      <p className="mt-1 text-sm font-medium">{profile.hourlyRate}€/h</p>
-                    )}
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -266,17 +273,107 @@ export default function TeacherProfile() {
                   Matières enseignées
                 </CardTitle>
                 <CardDescription>
-                  Les matières que vous enseignez
+                  Les matières que vous enseignez et leurs niveaux
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {profile.subjects.map((subject, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {subject}
-                    </Badge>
-                  ))}
-                </div>
+                {isEditing ? (
+                  <div className="space-y-4">
+                    {editedProfile.subjects.map((subject, index) => (
+                      <div key={index} className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between mb-3">
+                          <Select 
+                            value={subject.name} 
+                            onValueChange={(value) => {
+                              const newSubjects = [...editedProfile.subjects];
+                              newSubjects[index] = { ...subject, name: value };
+                              setEditedProfile(prev => ({ ...prev, subjects: newSubjects }));
+                            }}
+                          >
+                            <SelectTrigger className="w-48">
+                              <SelectValue placeholder="Choisir une matière" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {AVAILABLE_SUBJECTS.map(subj => (
+                                <SelectItem key={subj} value={subj}>{subj}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              const newSubjects = editedProfile.subjects.filter((_, i) => i !== index);
+                              setEditedProfile(prev => ({ ...prev, subjects: newSubjects }));
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        
+                        <div>
+                          <Label className="text-sm font-medium mb-2 block">Niveaux enseignés</Label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {AVAILABLE_LEVELS.map(level => (
+                              <div key={level} className="flex items-center space-x-2">
+                                <Checkbox 
+                                  id={`${index}-${level}`}
+                                  checked={subject.levels.includes(level)}
+                                  onCheckedChange={(checked) => {
+                                    const newSubjects = [...editedProfile.subjects];
+                                    if (checked) {
+                                      newSubjects[index] = { 
+                                        ...subject, 
+                                        levels: [...subject.levels, level] 
+                                      };
+                                    } else {
+                                      newSubjects[index] = { 
+                                        ...subject, 
+                                        levels: subject.levels.filter(l => l !== level) 
+                                      };
+                                    }
+                                    setEditedProfile(prev => ({ ...prev, subjects: newSubjects }));
+                                  }}
+                                />
+                                <Label htmlFor={`${index}-${level}`} className="text-xs">
+                                  {level}
+                                </Label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        const newSubjects = [...editedProfile.subjects, { name: '', levels: [] }];
+                        setEditedProfile(prev => ({ ...prev, subjects: newSubjects }));
+                      }}
+                      className="w-full"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Ajouter une matière
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {profile.subjects.map((subject, index) => (
+                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                        <div className="font-medium text-sm mb-2">{subject.name}</div>
+                        <div className="flex flex-wrap gap-1">
+                          {subject.levels.map(level => (
+                            <Badge key={level} variant="outline" className="text-xs">
+                              {level}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -367,11 +464,9 @@ export default function TeacherProfile() {
                       Recevez les notifications de nouveaux cours directement sur WhatsApp
                     </p>
                     
-                    {profile.isWhatsAppConnected && (
-                      <p className="text-xs text-gray-500 mb-3">
-                        Numéro: {profile.whatsAppNumber}
-                      </p>
-                    )}
+                    <p className="text-xs text-gray-500 mb-3">
+                      Numéro: {profile.whatsAppNumber}
+                    </p>
                     
                     <Button 
                       variant="outline" 
