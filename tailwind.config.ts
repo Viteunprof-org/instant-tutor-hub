@@ -97,20 +97,20 @@ export default {
 						transform: 'scale(1)'
 					},
 					'25%': {
-						transform: 'scale(1.05)'
+						transform: 'scale(1.1)'
 					},
 					'50%': {
-						transform: 'scale(0.95)'
+						transform: 'scale(0.9)'
 					},
 					'75%': {
-						transform: 'scale(1.05)'
+						transform: 'scale(1.1)'
 					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-scale': 'pulse-scale 2s ease-in-out'
+				'pulse-scale': 'pulse-scale 3s ease-in-out infinite'
 			}
 		}
 	},

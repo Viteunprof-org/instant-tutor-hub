@@ -64,11 +64,11 @@ export default function StudentDashboard() {
     const animateButton = localStorage.getItem('vup-animate-button');
     if (animateButton === 'true') {
       setShouldAnimateButton(true);
-      // Remove the flag after a delay so animation doesn't repeat
+      // Keep animation for longer, then stop it permanently
       setTimeout(() => {
         localStorage.removeItem('vup-animate-button');
         setShouldAnimateButton(false);
-      }, 3000);
+      }, 15000); // 15 seconds of animation
     }
   }, []);
 
@@ -108,7 +108,7 @@ export default function StudentDashboard() {
                 <Link to="/student/request-lesson">
                   <Button 
                     className={`bg-vup-navy text-white hover:bg-vup-navy/90 transition-transform duration-200 ${
-                      shouldAnimateButton ? 'animate-[pulse-scale_2s_ease-in-out]' : ''
+                      shouldAnimateButton ? 'animate-pulse-scale' : ''
                     }`}
                   >
                     <Zap className="mr-2 h-4 w-4" />
