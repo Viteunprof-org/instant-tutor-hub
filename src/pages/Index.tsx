@@ -368,7 +368,7 @@ const Index = () => {
           
           {/* Copyright */}
           <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
-            <p>© Copyright ViteUnProf 2024. Tous droits réservés.</p>
+            <p>© Copyright ViteUnProf 2025. Tous droits réservés.</p>
           </div>
         </div>
       </footer>
