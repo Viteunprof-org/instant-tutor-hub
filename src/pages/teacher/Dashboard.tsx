@@ -15,7 +15,12 @@ import {
   Users, 
   TrendingUp,
   Bell,
-  CheckCircle2
+  CheckCircle2,
+  User,
+  MessageSquare,
+  Shield,
+  GraduationCap,
+  Award
 } from 'lucide-react';
 
 // Mock data
@@ -68,6 +73,24 @@ const stats = {
   totalStudents: 43,
   thisWeekLessons: 8,
   completionRate: 98
+};
+
+// Mock teacher profile data
+const teacherProfile = {
+  firstName: 'Jean',
+  lastName: 'Dupont',
+  email: 'jean.dupont@email.com',
+  phone: '+33 6 12 34 56 78',
+  subjects: ['Mathématiques', 'Physique', 'Chimie'],
+  education: 'Master en Mathématiques Appliquées',
+  school: 'École Polytechnique',
+  experience: '5 ans d\'expérience en cours particuliers',
+  hourlyRate: 25,
+  biography: 'Professeur passionné avec 5 ans d\'expérience dans l\'enseignement des mathématiques et des sciences.',
+  isVerified: true,
+  isWhatsAppConnected: true,
+  verificationDate: '2025-01-15',
+  whatsAppNumber: '+33 6 12 34 56 78'
 };
 
 export default function TeacherDashboard() {
@@ -204,6 +227,142 @@ export default function TeacherDashboard() {
                   <p className="text-xs text-gray-600">Taux réussite</p>
                   <p className="text-lg font-bold">{stats.completionRate}%</p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Profile section */}
+        <div className="mb-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <User className="mr-2 h-5 w-5" />
+                Mon Profil
+              </CardTitle>
+              <CardDescription>
+                Informations personnelles et statut de vérification
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Informations personnelles */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold mb-3 flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      Informations personnelles
+                    </h3>
+                    <div className="space-y-2">
+                      <p className="text-sm">
+                        <span className="font-medium">Nom :</span> {teacherProfile.firstName} {teacherProfile.lastName}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">Email :</span> {teacherProfile.email}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">Téléphone :</span> {teacherProfile.phone}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">Tarif horaire :</span> {teacherProfile.hourlyRate}€/h
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold mb-3 flex items-center">
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      Matières enseignées
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {teacherProfile.subjects.map((subject, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {subject}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Formation et vérification */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold mb-3 flex items-center">
+                      <GraduationCap className="mr-2 h-4 w-4" />
+                      Formation et expérience
+                    </h3>
+                    <div className="space-y-2">
+                      <p className="text-sm">
+                        <span className="font-medium">Formation :</span> {teacherProfile.education}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">École :</span> {teacherProfile.school}
+                      </p>
+                      <p className="text-sm">
+                        <span className="font-medium">Expérience :</span> {teacherProfile.experience}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold mb-3 flex items-center">
+                      <Shield className="mr-2 h-4 w-4" />
+                      Statut de vérification
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Profil vérifié</span>
+                        <div className="flex items-center">
+                          {teacherProfile.isVerified ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 text-green-500 mr-1" />
+                              <Badge className="bg-green-100 text-green-800">Vérifié</Badge>
+                            </>
+                          ) : (
+                            <>
+                              <Clock className="h-4 w-4 text-yellow-500 mr-1" />
+                              <Badge variant="secondary">En attente</Badge>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Notifications WhatsApp</span>
+                        <div className="flex items-center">
+                          {teacherProfile.isWhatsAppConnected ? (
+                            <>
+                              <MessageSquare className="h-4 w-4 text-green-500 mr-1" />
+                              <Badge className="bg-green-100 text-green-800">Connecté</Badge>
+                            </>
+                          ) : (
+                            <>
+                              <MessageSquare className="h-4 w-4 text-gray-400 mr-1" />
+                              <Badge variant="secondary">Non connecté</Badge>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {teacherProfile.isWhatsAppConnected && (
+                        <p className="text-xs text-gray-500">
+                          Numéro WhatsApp: {teacherProfile.whatsAppNumber}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Biography */}
+              <div className="mt-6 pt-6 border-t">
+                <h3 className="font-semibold mb-3 flex items-center">
+                  <Award className="mr-2 h-4 w-4" />
+                  Biographie
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {teacherProfile.biography}
+                </p>
               </div>
             </CardContent>
           </Card>
