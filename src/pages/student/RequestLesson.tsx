@@ -208,85 +208,86 @@ export default function RequestLesson() {
               <CardContent>
                 <div className="space-y-3">
                   {urgencyLevels.map((level) => (
-                    <button
-                      key={level.value}
-                      type="button"
-                      onClick={() => handleUrgencyChange(level.value)}
-                      className={`w-full p-4 border rounded-lg text-left transition-colors ${
-                        urgency === level.value
-                          ? 'border-vup-yellow bg-vup-yellow/10'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{level.label}</span>
-                        <Badge className={level.color}>
-                          {level.value === 'high' && '🚀'}
-                          {level.value === 'medium' && '⏰'}
-                          {level.value === 'low' && '📅'}
-                        </Badge>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                    <div key={level.value}>
+                      <button
+                        type="button"
+                        onClick={() => handleUrgencyChange(level.value)}
+                        className={`w-full p-4 border rounded-lg text-left transition-colors ${
+                          urgency === level.value
+                            ? 'border-vup-yellow bg-vup-yellow/10'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">{level.label}</span>
+                          <Badge className={level.color}>
+                            {level.value === 'high' && '🚀'}
+                            {level.value === 'medium' && '⏰'}
+                            {level.value === 'low' && '📅'}
+                          </Badge>
+                        </div>
+                      </button>
 
-                {/* Date/Time picker for scheduled lessons */}
-                {(urgency === 'low' || urgency === 'medium') && (
-                  <div className="mt-6 space-y-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex-1">
-                        <Label htmlFor="date-picker">Date souhaitée</Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-start text-left font-normal mt-2",
-                                !selectedDate && "text-muted-foreground"
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Sélectionner une date"}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={selectedDate}
-                              onSelect={setSelectedDate}
-                              disabled={(date) => {
-                                const today = new Date();
-                                const maxDate = new Date();
-                                maxDate.setDate(today.getDate() + (urgency === 'medium' ? 1 : 7));
-                                return date < today || date > maxDate;
-                              }}
-                              initialFocus
-                              className={cn("p-3 pointer-events-auto")}
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
+                      {/* Date/Time picker appears directly under the selected button */}
+                      {urgency === level.value && (level.value === 'low' || level.value === 'medium') && (
+                        <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+                          <div className="flex items-center space-x-4">
+                            <div className="flex-1">
+                              <Label htmlFor="date-picker">Date souhaitée</Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "w-full justify-start text-left font-normal mt-2",
+                                      !selectedDate && "text-muted-foreground"
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Sélectionner une date"}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                  <Calendar
+                                    mode="single"
+                                    selected={selectedDate}
+                                    onSelect={setSelectedDate}
+                                    disabled={(date) => {
+                                      const today = new Date();
+                                      const maxDate = new Date();
+                                      maxDate.setDate(today.getDate() + (urgency === 'medium' ? 1 : 7));
+                                      return date < today || date > maxDate;
+                                    }}
+                                    initialFocus
+                                    className={cn("p-3 pointer-events-auto")}
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
 
-                      {selectedDate && (
-                        <div className="flex-1">
-                          <Label htmlFor="time-picker">Heure souhaitée</Label>
-                          <Select value={selectedTime} onValueChange={setSelectedTime}>
-                            <SelectTrigger className="mt-2">
-                              <SelectValue placeholder="Sélectionner une heure" />
-                            </SelectTrigger>
-                            <SelectContent className="max-h-60">
-                              {timeSlots.map((time) => (
-                                <SelectItem key={time} value={time}>
-                                  {time}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            {selectedDate && (
+                              <div className="flex-1">
+                                <Label htmlFor="time-picker">Heure souhaitée</Label>
+                                <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                  <SelectTrigger className="mt-2">
+                                    <SelectValue placeholder="Sélectionner une heure" />
+                                  </SelectTrigger>
+                                  <SelectContent className="max-h-60">
+                                    {timeSlots.map((time) => (
+                                      <SelectItem key={time} value={time}>
+                                        {time}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
-                  </div>
-                )}
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
@@ -311,7 +312,7 @@ export default function RequestLesson() {
                   <Label htmlFor="image-upload" className="mb-2 block">
                     Ajouter des images (optionnel)
                   </Label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
                     <input
                       id="image-upload"
                       type="file"
@@ -324,9 +325,9 @@ export default function RequestLesson() {
                       htmlFor="image-upload" 
                       className="cursor-pointer flex flex-col items-center space-y-2"
                     >
-                      <Upload className="h-8 w-8 text-gray-400" />
+                      <Upload className="h-6 w-6 text-gray-400" />
                       <span className="text-sm text-gray-600">
-                        Cliquez pour ajouter des images ou glissez-déposez
+                        Cliquez pour ajouter des images
                       </span>
                       <span className="text-xs text-gray-500">
                         PNG, JPG jusqu'à 5MB chacune
