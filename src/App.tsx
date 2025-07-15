@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import StudentDashboard from "./pages/student/Dashboard";
 import RequestLesson from "./pages/student/RequestLesson";
 import TeacherDashboard from "./pages/teacher/Dashboard";
+import TeacherProfile from "./pages/teacher/Profile";
 import NotFound from "./pages/NotFound";
 
 function ProtectedRoute({ children, requiredUserType }: { children: React.ReactNode, requiredUserType?: 'student' | 'teacher' }) {
@@ -59,6 +60,11 @@ function AppRoutes() {
       <Route path="/teacher/dashboard" element={
         <ProtectedRoute requiredUserType="teacher">
           <TeacherDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/teacher/profile" element={
+        <ProtectedRoute requiredUserType="teacher">
+          <TeacherProfile />
         </ProtectedRoute>
       } />
       
