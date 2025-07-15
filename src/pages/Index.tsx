@@ -3,6 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Clock, Users, Star, Zap, Play, CheckCircle, BookOpen } from 'lucide-react';
 
+// Import des logos
+import centralelogo from '@/assets/logos/centrale-logo.png';
+import enstalogo from '@/assets/logos/ensta-logo.png';
+import audencialogo from '@/assets/logos/audencia-logo.png';
+import polytechniquelogo from '@/assets/logos/polytechnique-logo.png';
+import esseclogo from '@/assets/logos/essec-logo.png';
+import sorbonnelogo from '@/assets/logos/sorbonne-logo.png';
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy">
@@ -129,22 +137,22 @@ const Index = () => {
           {/* Logos des écoles */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-70">
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">Centrale</span>
+              <img src={centralelogo} alt="École Centrale" className="h-8 max-w-full object-contain" />
             </div>
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">ENSTA</span>
+              <img src={enstalogo} alt="ENSTA Paris" className="h-8 max-w-full object-contain" />
             </div>
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">Audencia</span>
+              <img src={audencialogo} alt="Audencia Business School" className="h-8 max-w-full object-contain" />
             </div>
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">Polytechnique</span>
+              <img src={polytechniquelogo} alt="École Polytechnique" className="h-8 max-w-full object-contain" />
             </div>
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">ESSEC</span>
+              <img src={esseclogo} alt="ESSEC Business School" className="h-8 max-w-full object-contain" />
             </div>
             <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <span className="text-vup-navy font-bold text-sm">Sorbonne</span>
+              <img src={sorbonnelogo} alt="Sorbonne Université" className="h-8 max-w-full object-contain" />
             </div>
           </div>
         </div>
