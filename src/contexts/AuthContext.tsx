@@ -21,11 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Simulate loading user from localStorage or API
     const savedUser = localStorage.getItem('vup-user');
-    const hasSeenOnboarding = localStorage.getItem('vup-onboarding-seen');
     
     if (savedUser) {
       setUser(JSON.parse(savedUser));
-      setIsFirstLogin(!hasSeenOnboarding);
+      // Don't trigger onboarding on app load - only after registration
+      setIsFirstLogin(false);
     }
     setIsLoading(false);
   }, []);
@@ -49,9 +49,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(mockUser);
     localStorage.setItem('vup-user', JSON.stringify(mockUser));
     
-    // Check if user has seen onboarding
-    const hasSeenOnboarding = localStorage.getItem('vup-onboarding-seen');
-    setIsFirstLogin(!hasSeenOnboarding);
+    // Login should not trigger onboarding - only registration does
+    setIsFirstLogin(false);
     
     setIsLoading(false);
   };

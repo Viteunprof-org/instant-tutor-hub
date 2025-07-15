@@ -51,12 +51,26 @@ const stats = {
 export default function StudentDashboard() {
   const { user, isFirstLogin, setIsFirstLogin } = useAuth();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [shouldAnimateButton, setShouldAnimateButton] = useState(false);
 
   useEffect(() => {
     if (isFirstLogin && user?.type === 'student') {
       setShowOnboarding(true);
     }
   }, [isFirstLogin, user]);
+
+  useEffect(() => {
+    // Check if button should animate after onboarding
+    const animateButton = localStorage.getItem('vup-animate-button');
+    if (animateButton === 'true') {
+      setShouldAnimateButton(true);
+      // Remove the flag after a delay so animation doesn't repeat
+      setTimeout(() => {
+        localStorage.removeItem('vup-animate-button');
+        setShouldAnimateButton(false);
+      }, 3000);
+    }
+  }, []);
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
@@ -92,7 +106,11 @@ export default function StudentDashboard() {
                   Trouvez un professeur disponible instantanément
                 </p>
                 <Link to="/student/request-lesson">
-                  <Button className="bg-vup-navy text-white hover:bg-vup-navy/90">
+                  <Button 
+                    className={`bg-vup-navy text-white hover:bg-vup-navy/90 transition-transform duration-200 ${
+                      shouldAnimateButton ? 'animate-[pulse-scale_2s_ease-in-out]' : ''
+                    }`}
+                  >
                     <Zap className="mr-2 h-4 w-4" />
                     Prendre un cours maintenant
                   </Button>
