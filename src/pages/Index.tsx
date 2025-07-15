@@ -31,7 +31,7 @@ const Index = () => {
           
           <div className="space-x-4">
             <Link to="/login">
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-vup-navy">
+              <Button variant="outline" className="border-white text-white bg-transparent hover:bg-white hover:text-vup-navy">
                 Se connecter
               </Button>
             </Link>
