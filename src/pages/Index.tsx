@@ -122,42 +122,47 @@ const Index = () => {
 
       {/* Apprenez avec les meilleurs - Section bleue */}
       <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Apprenez avec les meilleurs
-          </h2>
-          <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
-            Accédez en un instant aux meilleurs étudiants et professeurs pour être aidé(e) dans la matière de votre choix.
-          </p>
-          <p className="text-md text-gray-300 mb-12 max-w-2xl mx-auto">
-            Nos professeurs sont issus des plus grandes écoles d'ingénieurs et de commerce et des universités les plus prestigieuses.
-          </p>
-          
-          <Link to="/register" className="inline-block mb-16">
-            <Button className="bg-vup-yellow text-vup-navy text-lg px-8 py-4 rounded-lg hover:bg-vup-yellow/90 transform hover:scale-105 transition-all">
-              Prendre un cours
-            </Button>
-          </Link>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Texte à gauche */}
+            <div className="text-white">
+              <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+                Apprenez avec les meilleurs
+              </h2>
+              <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed">
+                Accédez en un instant aux meilleurs étudiants et professeurs pour être aidé(e) dans la matière de votre choix.
+              </p>
+              <p className="text-md text-gray-300 mb-12 leading-relaxed">
+                Nos professeurs sont issus des plus grandes écoles d'ingénieurs et de commerce et des universités les plus prestigieuses.
+              </p>
+              
+              <Link to="/register" className="inline-block">
+                <Button className="bg-vup-yellow text-vup-navy text-lg px-8 py-4 rounded-full hover:bg-vup-yellow/90 transform hover:scale-105 transition-all font-semibold">
+                  Prendre un cours
+                </Button>
+              </Link>
+            </div>
 
-          {/* Logos des écoles */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-70">
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={centralelogo} alt="École Centrale" className="h-8 max-w-full object-contain" />
-            </div>
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={enstalogo} alt="ENSTA Paris" className="h-8 max-w-full object-contain" />
-            </div>
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={audencialogo} alt="Audencia Business School" className="h-8 max-w-full object-contain" />
-            </div>
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={polytechniquelogo} alt="École Polytechnique" className="h-8 max-w-full object-contain" />
-            </div>
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={esseclogo} alt="ESSEC Business School" className="h-8 max-w-full object-contain" />
-            </div>
-            <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
-              <img src={sorbonnelogo} alt="Sorbonne Université" className="h-8 max-w-full object-contain" />
+            {/* Logos à droite */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={centralelogo} alt="École Centrale" className="h-10 max-w-full object-contain" />
+              </div>
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={enstalogo} alt="ENSTA Paris" className="h-10 max-w-full object-contain" />
+              </div>
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={audencialogo} alt="Audencia Business School" className="h-10 max-w-full object-contain" />
+              </div>
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={polytechniquelogo} alt="École Polytechnique" className="h-10 max-w-full object-contain" />
+              </div>
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={esseclogo} alt="ESSEC Business School" className="h-10 max-w-full object-contain" />
+              </div>
+              <div className="bg-white rounded-xl p-6 h-20 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
+                <img src={sorbonnelogo} alt="Sorbonne Université" className="h-10 max-w-full object-contain" />
+              </div>
             </div>
           </div>
         </div>
