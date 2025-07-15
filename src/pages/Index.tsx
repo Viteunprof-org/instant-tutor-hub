@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Clock, Users, Star, Zap, Play, CheckCircle, BookOpen } from 'lucide-react';
+import { Clock, Users, Star, Zap, Play, CheckCircle, BookOpen, Facebook, Instagram, Mail, Phone } from 'lucide-react';
 
 // Import des logos
 import centralelogo from '@/assets/logos/centrale-logo.png';
@@ -302,6 +302,76 @@ const Index = () => {
           </Link>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-50 py-16 border-t">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Logo et contact */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-1">
+                <span className="text-2xl font-bold text-vup-navy">vite</span>
+                <span className="text-2xl font-bold text-vup-yellow">un</span>
+                <span className="text-2xl font-bold text-vup-navy">prof</span>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <Mail className="h-4 w-4" />
+                  <span>contact@viteunprof.com</span>
+                </div>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <Phone className="h-4 w-4" />
+                  <span>06 51 01 10 27</span>
+                </div>
+              </div>
+              <div className="flex space-x-4">
+                <div className="bg-vup-navy p-2 rounded-lg">
+                  <Facebook className="h-5 w-5 text-white" />
+                </div>
+                <div className="bg-vup-navy p-2 rounded-lg">
+                  <Instagram className="h-5 w-5 text-white" />
+                </div>
+              </div>
+            </div>
+
+            {/* Sécurité */}
+            <div>
+              <h3 className="font-semibold text-vup-navy mb-4">Sécurité</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Mentions Légales</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Conditions Générales</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">RGPD</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Assistance</a></li>
+              </ul>
+            </div>
+
+            {/* Plateforme */}
+            <div>
+              <h3 className="font-semibold text-vup-navy mb-4">Plateforme</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:text-vup-navy transition-colors">FAQ</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Blog</a></li>
+              </ul>
+            </div>
+
+            {/* Entreprise */}
+            <div>
+              <h3 className="font-semibold text-vup-navy mb-4">Entreprise</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Presse</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Équipe</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">Service commercial</a></li>
+                <li><a href="#" className="hover:text-vup-navy transition-colors">App et Logiciel</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          {/* Copyright */}
+          <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
+            <p>© Copyright ViteUnProf 2024. Tous droits réservés.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
