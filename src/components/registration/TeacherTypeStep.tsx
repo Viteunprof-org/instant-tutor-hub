@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, GraduationCap, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface TeacherTypeStepProps {
   onSelectType: (type: 'student-teacher' | 'professional-teacher') => void;
@@ -48,9 +49,9 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
         </Button>
         
         <div className="text-center mt-6">
-          <button className="text-blue-500 hover:underline text-sm">
+          <Link to="/login?type=teacher" className="text-blue-500 hover:underline text-sm">
             Se connecter
-          </button>
+          </Link>
         </div>
       </CardContent>
     </Card>
