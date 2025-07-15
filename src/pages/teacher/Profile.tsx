@@ -465,7 +465,7 @@ export default function TeacherProfile() {
                     </p>
                     
                     <p className="text-xs text-gray-500 mb-3">
-                      Numéro: {profile.whatsAppNumber}
+                      Numéro: <span className="font-medium">{profile.whatsAppNumber}</span>
                     </p>
                     
                     <Button 
