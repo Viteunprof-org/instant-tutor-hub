@@ -21,11 +21,19 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm font-medium text-muted-foreground">
-            viteunprof
-          </span>
+          <div className="flex items-center space-x-1">
+            <span className="text-sm font-bold text-muted-foreground">vite</span>
+            <span className="text-sm font-bold text-vup-yellow">un</span>
+            <span className="text-sm font-bold text-muted-foreground">prof</span>
+          </div>
         </div>
-        <CardTitle className="text-center text-xl">
+        <CardTitle className="text-center text-xl mb-2">
+          Bienvenue
+        </CardTitle>
+        <p className="text-center text-muted-foreground text-sm mb-4">
+          Choisissez votre profil pour commencer
+        </p>
+        <CardTitle className="text-center text-lg">
           Devenir professeur
         </CardTitle>
       </CardHeader>
