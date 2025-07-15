@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    --primary: 215 100% 14%; /* Dark blue from ViteUnProf */
+    --primary: 218 40% 17%; /* Dark blue from ViteUnProf */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 45 100% 51%; /* Yellow accent from ViteUnProf */
-    --accent-foreground: 215 100% 14%;
+    --accent-foreground: 218 40% 17%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -38,7 +38,7 @@ All colors MUST be HSL.
     --ring: 45 100% 51%;
 
     /* Custom ViteUnProf specific colors */
-    --vup-navy: 215 100% 14%;
+    --vup-navy: 218 40% 17%;
     --vup-yellow: 45 100% 51%;
     --vup-light-blue: 210 100% 97%;
     --vup-gray: 215 16% 47%;
@@ -63,7 +63,7 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 215 100% 14%;
+    --background: 218 40% 17%;
     --foreground: 0 0% 100%;
 
     --card: 215 95% 16%;
@@ -73,7 +73,7 @@ All colors MUST be HSL.
     --popover-foreground: 0 0% 100%;
 
     --primary: 45 100% 51%;
-    --primary-foreground: 215 100% 14%;
+    --primary-foreground: 218 40% 17%;
 
     --secondary: 215 85% 18%;
     --secondary-foreground: 0 0% 100%;
@@ -82,7 +82,7 @@ All colors MUST be HSL.
     --muted-foreground: 215 20% 65%;
 
     --accent: 45 100% 51%;
-    --accent-foreground: 215 100% 14%;
+    --accent-foreground: 218 40% 17%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -93,7 +93,7 @@ All colors MUST be HSL.
 
     /* Custom ViteUnProf specific colors for dark mode */
     --vup-navy: 45 100% 51%;
-    --vup-yellow: 215 100% 14%;
+    --vup-yellow: 218 40% 17%;
     --vup-light-blue: 215 85% 18%;
     --vup-gray: 215 20% 65%;
     --sidebar-background: 240 5.9% 10%;
