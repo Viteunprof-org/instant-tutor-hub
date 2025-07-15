@@ -150,42 +150,42 @@ const Index = () => {
             </div>
 
             {/* Logos à droite */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-8 opacity-70">
-              <div className="flex items-center justify-center h-16">
-                <img src={centralesupeleclogo} alt="CentraleSupélec" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+            <div className="grid grid-cols-4 gap-4">
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={centralesupeleclogo} alt="CentraleSupélec" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={enstalogo} alt="ENSTA ParisTech" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={enstalogo} alt="ENSTA ParisTech" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={audencialogo} alt="Audencia" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={audencialogo} alt="Audencia" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={polytechniquelogo} alt="École Polytechnique" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={polytechniquelogo} alt="École Polytechnique" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={esseclogo} alt="ESSEC Business School" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={esseclogo} alt="ESSEC Business School" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={mineslogo} alt="Mines ParisTech" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={mineslogo} alt="Mines ParisTech" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={isaelogo} alt="ISAE SUPAERO" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={isaelogo} alt="ISAE SUPAERO" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={centralelogo} alt="Centrale Marseille" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={centralelogo} alt="Centrale Marseille" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={sorbonnelogo} alt="Sorbonne Université" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={sorbonnelogo} alt="Sorbonne Université" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={gemlogo} alt="Grenoble École de Management" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={gemlogo} alt="Grenoble École de Management" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={sciencespologo} alt="Sciences Po" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={sciencespologo} alt="Sciences Po" className="h-8 max-w-full object-contain" />
               </div>
-              <div className="flex items-center justify-center h-16">
-                <img src={edheclogo} alt="EDHEC Business School" className="h-8 max-w-full object-contain filter brightness-0 invert" />
+              <div className="bg-white rounded-lg p-4 h-16 flex items-center justify-center">
+                <img src={edheclogo} alt="EDHEC Business School" className="h-8 max-w-full object-contain" />
               </div>
             </div>
           </div>
