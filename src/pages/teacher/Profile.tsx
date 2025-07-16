@@ -610,10 +610,17 @@ export default function TeacherProfile() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">WhatsApp</span>
-                    <Badge variant="secondary">Bientôt disponible</Badge>
+                    {user.isVerified ? (
+                      <Badge className="bg-green-100 text-green-800">Disponible</Badge>
+                    ) : (
+                      <Badge variant="secondary">Bientôt disponible</Badge>
+                    )}
                   </div>
                   <p className="text-xs text-gray-500">
-                    Recevez les notifications de nouveaux cours directement sur WhatsApp
+                    {user.isVerified 
+                      ? "Recevez les notifications de nouveaux cours directement sur WhatsApp"
+                      : "Complétez et faites vérifier votre profil pour activer les notifications WhatsApp"
+                    }
                   </p>
                 </div>
               </CardContent>
