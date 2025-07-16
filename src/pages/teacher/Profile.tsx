@@ -228,7 +228,7 @@ export default function TeacherProfile() {
                             Améliorez votre profil
                           </h4>
                           <p className="text-sm text-amber-700 mb-2">
-                            Complétez ces informations pour attirer plus d'élèves :
+                            Complétez ces informations pour commencer a donner des cours :
                           </p>
                           <ul className="text-sm text-amber-700 space-y-1">
                             {missingFields.map((field, index) => (
