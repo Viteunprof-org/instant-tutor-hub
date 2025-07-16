@@ -83,24 +83,19 @@ export default function StudentDashboard() {
         {/* Quick action */}
         <Card className="mb-8 bg-gradient-to-r from-vup-yellow via-yellow-400 to-vup-yellow border-0">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-vup-navy mb-2">
-                  Besoin d'aide maintenant ?
-                </h2>
-                <p className="text-vup-navy/80 mb-4">
-                  Trouvez un professeur disponible instantanément
-                </p>
-                <Link to="/student/request-lesson">
-                  <Button className="bg-vup-navy text-white hover:bg-vup-navy/90">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Prendre un cours maintenant
-                  </Button>
-                </Link>
-              </div>
-              <div className="hidden md:block">
-                <div className="text-6xl">🚀</div>
-              </div>
+            <div>
+              <h2 className="text-2xl font-bold text-vup-navy mb-2">
+                Besoin d'aide maintenant ?
+              </h2>
+              <p className="text-vup-navy/80 mb-4">
+                Trouvez un professeur disponible instantanément
+              </p>
+              <Link to="/student/request-lesson">
+                <Button className="bg-vup-navy text-white hover:bg-vup-navy/90">
+                  <Zap className="mr-2 h-4 w-4" />
+                  Prendre un cours maintenant
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
