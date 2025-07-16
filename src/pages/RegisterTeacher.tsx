@@ -93,7 +93,14 @@ export default function RegisterTeacher() {
     }
 
     try {
-      await register(formData.email, formData.password, formData.firstName, formData.lastName, 'teacher');
+      // Prepare additional data for teacher registration
+      const additionalData = {
+        phone: formData.whatsappNumber,
+        subjects: formData.subjects,
+        teacherType: formData.teacherType
+      };
+      
+      await register(formData.email, formData.password, formData.firstName, formData.lastName, 'teacher', undefined, additionalData);
       
       toast({
         title: "Inscription réussie",

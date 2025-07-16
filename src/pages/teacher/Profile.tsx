@@ -260,7 +260,7 @@ export default function TeacherProfile() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="firstName">Prénom *</Label>
+                    <Label htmlFor="firstName">Prénom</Label>
                     {isEditing ? (
                       <Input
                         id="firstName"
@@ -274,7 +274,7 @@ export default function TeacherProfile() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="lastName">Nom *</Label>
+                    <Label htmlFor="lastName">Nom</Label>
                     {isEditing ? (
                       <Input
                         id="lastName"
@@ -288,7 +288,7 @@ export default function TeacherProfile() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">Email</Label>
                     {isEditing ? (
                       <Input
                         id="email"

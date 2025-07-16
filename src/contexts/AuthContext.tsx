@@ -6,7 +6,7 @@ interface AuthContextType {
   setUser: (user: User | null) => void;
   login: (email: string, password: string, userType: 'student' | 'teacher') => Promise<void>;
   logout: () => void;
-  register: (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent') => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent', additionalData?: any) => Promise<void>;
   isLoading: boolean;
   isFirstLogin: boolean;
   setIsFirstLogin: (value: boolean) => void;
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent') => {
+  const register = async (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent', additionalData?: any) => {
     setIsLoading(true);
     
     // Simulate API call
@@ -71,6 +71,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       parentType,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
       createdAt: new Date(),
+      // Include additional data from registration
+      ...(additionalData || {})
     };
     
     setUser(mockUser);
