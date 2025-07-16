@@ -104,8 +104,8 @@ export default function TeacherProfile() {
     experience: user?.experience || '',
     education: user?.education || '',
     whatsappNumber: user?.whatsappNumber || '',
-    isVerified: user?.isVerified || false,
-    verificationDate: user?.verificationDate || ''
+    isVerified: true, // Temporairement mis à true pour test
+    verificationDate: new Date().toISOString() // Date actuelle pour test
   });
 
   const completionPercentage = useMemo(() => calculateProfileCompletion(user), [user]);
