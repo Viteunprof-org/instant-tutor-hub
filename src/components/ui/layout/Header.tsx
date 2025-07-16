@@ -1,4 +1,4 @@
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, Coins } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -36,6 +36,13 @@ export function Header({ isAvailable, onAvailabilityChange, isVerified = true }:
 
           {user && (
             <div className="flex items-center space-x-4">
+              {/* Affichage des crédits pour les élèves */}
+              {user.type === 'student' && (
+                <div className="flex items-center space-x-2 bg-vup-yellow/10 text-vup-navy px-3 py-1 rounded-full border border-vup-yellow/20">
+                  <Coins className="h-4 w-4" />
+                  <span className="text-sm font-medium">{user.credits || 0} crédits</span>
+                </div>
+              )}
               {/* Disponibilité pour les professeurs */}
               {user.type === 'teacher' && isAvailable !== undefined && onAvailabilityChange && (
                 <TooltipProvider>

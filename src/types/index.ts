@@ -7,6 +7,7 @@ export interface User {
   parentType?: 'student' | 'parent'; // For students: who registered them
   avatar?: string;
   createdAt: Date;
+  credits?: number; // Student credits (1 credit = 1 euro)
   
   // Additional profile fields for teachers
   phone?: string;

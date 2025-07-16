@@ -45,6 +45,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       type: userType,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
       createdAt: new Date(),
+      // Give credits to existing students on login if they don't have any
+      credits: userType === 'student' ? 5 : undefined,
     };
     
     setUser(mockUser);
@@ -71,6 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       parentType,
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
       createdAt: new Date(),
+      // Give 5 free credits to new students
+      credits: userType === 'student' ? 5 : undefined,
       // Include additional data from registration
       ...(additionalData || {})
     };

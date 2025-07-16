@@ -28,10 +28,10 @@ const subjects = [
 ];
 
 const durations = [
-  { value: 'minute', label: 'À la minute', price: '0,50€/min' },
-  { value: '30', label: '30 minutes', price: '15€' },
-  { value: '45', label: '45 minutes', price: '22€' },
-  { value: '60', label: '1 heure', price: '30€' },
+  { value: 'minute', label: 'À la minute', price: '0,5 crédit/min' },
+  { value: '30', label: '30 minutes', price: '15 crédits' },
+  { value: '45', label: '45 minutes', price: '22 crédits' },
+  { value: '60', label: '1 heure', price: '30 crédits' },
 ];
 
 const urgencyLevels = [
