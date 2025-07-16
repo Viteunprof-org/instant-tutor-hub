@@ -3,6 +3,7 @@ import { User } from '@/types';
 
 interface AuthContextType {
   user: User | null;
+  setUser: (user: User | null) => void;
   login: (email: string, password: string, userType: 'student' | 'teacher') => Promise<void>;
   logout: () => void;
   register: (email: string, password: string, firstName: string, lastName: string, userType: 'student' | 'teacher', parentType?: 'student' | 'parent') => Promise<void>;
@@ -89,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, isLoading, isFirstLogin, setIsFirstLogin }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, register, isLoading, isFirstLogin, setIsFirstLogin }}>
       {children}
     </AuthContext.Provider>
   );

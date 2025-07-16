@@ -7,6 +7,18 @@ export interface User {
   parentType?: 'student' | 'parent'; // For students: who registered them
   avatar?: string;
   createdAt: Date;
+  
+  // Additional profile fields for teachers
+  phone?: string;
+  school?: string;
+  graduationYear?: string;
+  subjects?: { name: string; levels: string[] }[];
+  biography?: string;
+  experience?: string;
+  education?: string;
+  whatsappNumber?: string;
+  isVerified?: boolean;
+  verificationDate?: string;
 }
 
 export interface Subject {
