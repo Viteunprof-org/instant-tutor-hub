@@ -36,7 +36,7 @@ const SUBJECTS = [
 
 const LEVELS = [
   '6ème',
-  '5ème',
+  '5ème', 
   '4ème',
   '3ème',
   'Seconde',
