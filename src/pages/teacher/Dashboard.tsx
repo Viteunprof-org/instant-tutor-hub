@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import OnboardingModal from '@/components/registration/OnboardingModal';
+import { ProfileCompletionBanner } from '@/components/ProfileCompletionBanner';
+import { useProfileStatus } from '@/hooks/useProfileStatus';
 import { 
   BookOpen, 
   Calendar, 
@@ -72,6 +74,7 @@ export default function TeacherDashboard() {
   const { user, isFirstLogin, setIsFirstLogin } = useAuth();
   const [isAvailable, setIsAvailable] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const { isVerified } = useProfileStatus();
 
   useEffect(() => {
     if (isFirstLogin && user?.type === 'teacher') {
@@ -100,10 +103,14 @@ export default function TeacherDashboard() {
       <div className="min-h-screen bg-gray-50">
         <Header 
           isAvailable={isAvailable} 
-          onAvailabilityChange={setIsAvailable} 
+          onAvailabilityChange={setIsAvailable}
+          isVerified={isVerified}
         />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Profile completion banner */}
+        <ProfileCompletionBanner />
+
         {/* Welcome section */}
         <div className="mb-8">
           <div>
