@@ -172,21 +172,6 @@ export default function TeacherSubjectsStep({
                   <div key={subject.name} className="p-3 border rounded-lg">
                     <h4 className="text-sm font-medium mb-2">{subject.name}</h4>
                     <div className="grid grid-cols-2 gap-2">
-                      {/* Option "Tous les niveaux" en premier */}
-                      <div className="flex items-center space-x-2 col-span-2">
-                        <Checkbox
-                          id={`${subject.name}-${ALL_LEVELS_OPTION}`}
-                          checked={areAllLevelsSelected(subject)}
-                          onCheckedChange={(checked) => handleLevelChange(subject.name, ALL_LEVELS_OPTION, checked as boolean)}
-                        />
-                        <Label
-                          htmlFor={`${subject.name}-${ALL_LEVELS_OPTION}`}
-                          className="text-xs font-normal cursor-pointer"
-                        >
-                          {ALL_LEVELS_OPTION}
-                        </Label>
-                      </div>
-                      
                       {/* Niveaux individuels */}
                       {LEVELS.map((level) => (
                         <div key={level} className="flex items-center space-x-2">
@@ -203,6 +188,21 @@ export default function TeacherSubjectsStep({
                           </Label>
                         </div>
                       ))}
+                      
+                      {/* Option "Tous les niveaux" en face de Terminale */}
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`${subject.name}-${ALL_LEVELS_OPTION}`}
+                          checked={areAllLevelsSelected(subject)}
+                          onCheckedChange={(checked) => handleLevelChange(subject.name, ALL_LEVELS_OPTION, checked as boolean)}
+                        />
+                        <Label
+                          htmlFor={`${subject.name}-${ALL_LEVELS_OPTION}`}
+                          className="text-xs font-normal cursor-pointer"
+                        >
+                          {ALL_LEVELS_OPTION}
+                        </Label>
+                      </div>
                     </div>
                   </div>
                 ))}
