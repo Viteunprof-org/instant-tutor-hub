@@ -31,7 +31,7 @@ const durations = [
   { value: '30', label: '30 minutes', price: '15€' },
   { value: '45', label: '45 minutes', price: '22€' },
   { value: '60', label: '1 heure', price: '30€' },
-  { value: '90', label: '1h30', price: '45€' },
+  { value: 'minute', label: 'À la minute', price: '0,50€/min' },
 ];
 
 const urgencyLevels = [
