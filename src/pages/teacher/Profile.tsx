@@ -585,7 +585,10 @@ export default function TeacherProfile() {
                   {!user.isVerified && (
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                       <p className="text-xs text-blue-700">
-                        Complétez votre profil pour accélérer la vérification
+                        {completionPercentage === 100 
+                          ? "Profil en cours de validation" 
+                          : "Complétez votre profil pour accélérer la vérification"
+                        }
                       </p>
                     </div>
                   )}
