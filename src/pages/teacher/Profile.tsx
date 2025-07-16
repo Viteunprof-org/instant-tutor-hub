@@ -89,7 +89,9 @@ const getMissingFields = (user: any) => {
 };
 
 export default function TeacherProfile() {
-  const { user, setUser } = useAuth();
+  const { user: originalUser, setUser } = useAuth();
+  // Temporairement marquer l'utilisateur comme vérifié pour test
+  const user = originalUser ? { ...originalUser, isVerified: true, verificationDate: new Date().toISOString() } : null;
   const [isEditing, setIsEditing] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const [editedProfile, setEditedProfile] = useState({
