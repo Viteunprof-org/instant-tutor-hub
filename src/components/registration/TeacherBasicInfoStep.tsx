@@ -100,7 +100,7 @@ export default function TeacherBasicInfoStep({
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription className="text-sm">
                 Veuillez utiliser une adresse email universitaire ou académique. 
-                Les adresses Gmail, Outlook, etc. ne sont pas acceptées pour l'inscription des professeurs.
+                Les adresses Gmail, Outlook, etc. ne sont pas acceptées.
               </AlertDescription>
             </Alert>
           )}
