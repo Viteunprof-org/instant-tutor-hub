@@ -1,5 +1,6 @@
 import { LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -11,7 +12,12 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
-export function Header() {
+export interface HeaderProps {
+  isAvailable?: boolean;
+  onAvailabilityChange?: (available: boolean) => void;
+}
+
+export function Header({ isAvailable, onAvailabilityChange }: HeaderProps = {}) {
   const { user, logout } = useAuth();
 
   return (
@@ -28,6 +34,18 @@ export function Header() {
 
           {user && (
             <div className="flex items-center space-x-4">
+              {/* Disponibilité pour les professeurs */}
+              {user.type === 'teacher' && isAvailable !== undefined && onAvailabilityChange && (
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-vup-gray">Disponible</span>
+                  <Switch
+                    checked={isAvailable}
+                    onCheckedChange={onAvailabilityChange}
+                  />
+                  <div className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-gray-400'}`} />
+                </div>
+              )}
+              
               <span className="text-sm text-vup-gray">
                 {user.type === 'student' ? 'Élève' : 'Professeur'}
               </span>

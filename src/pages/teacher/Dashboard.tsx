@@ -3,11 +3,9 @@ import { Header } from '@/components/ui/layout/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/contexts/AuthContext';
 import OnboardingModal from '@/components/registration/OnboardingModal';
 import { 
-  Clock, 
   BookOpen, 
   Calendar, 
   Star, 
@@ -100,37 +98,21 @@ export default function TeacherDashboard() {
   return (
     <>
       <div className="min-h-screen bg-gray-50">
-        <Header />
+        <Header 
+          isAvailable={isAvailable} 
+          onAvailabilityChange={setIsAvailable} 
+        />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome section */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Bonjour {user?.firstName} ! 👨‍🏫
-              </h1>
-              <p className="text-gray-600">
-                Gérez vos cours et aidez vos élèves à réussir
-              </p>
-            </div>
-            
-            {/* Availability toggle */}
-            <Card className="p-4">
-              <div className="flex items-center space-x-3">
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium">Disponibilité</span>
-                  <span className="text-xs text-gray-500">
-                    {isAvailable ? 'En ligne' : 'Hors ligne'}
-                  </span>
-                </div>
-                <Switch
-                  checked={isAvailable}
-                  onCheckedChange={setIsAvailable}
-                />
-                <div className={`w-3 h-3 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-gray-400'}`} />
-              </div>
-            </Card>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Bonjour {user?.firstName} ! 👨‍🏫
+            </h1>
+            <p className="text-gray-600">
+              Gérez vos cours et aidez vos élèves à réussir
+            </p>
           </div>
         </div>
 
