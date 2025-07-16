@@ -90,8 +90,8 @@ export default function TeacherSubjectsStep({
   };
 
   return (
-    <Card className="w-full max-w-md max-h-[90vh] overflow-auto">
-      <CardHeader>
+    <Card className="w-full max-w-md h-[90vh] flex flex-col">
+      <CardHeader className="flex-shrink-0">
         <div className="flex items-center space-x-2 mb-2">
           <Button
             variant="ghost"
@@ -110,7 +110,7 @@ export default function TeacherSubjectsStep({
         </CardTitle>
         <ProgressBar currentStep={2} totalSteps={4} />
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="flex-1 overflow-y-auto space-y-6 px-6">
         {/* Aperçu des sélections */}
         {data.subjects.length > 0 && (
           <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
@@ -210,16 +210,16 @@ export default function TeacherSubjectsStep({
             </div>
           )}
         </div>
-
-        <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={onBack}>
-            Retour
-          </Button>
-          <Button onClick={onNext} disabled={!isValid}>
-            Suivant
-          </Button>
-        </div>
       </CardContent>
+      
+      <div className="flex justify-between p-6 pt-4 border-t flex-shrink-0">
+        <Button variant="outline" onClick={onBack}>
+          Retour
+        </Button>
+        <Button onClick={onNext} disabled={!isValid}>
+          Suivant
+        </Button>
+      </div>
     </Card>
   );
 }
