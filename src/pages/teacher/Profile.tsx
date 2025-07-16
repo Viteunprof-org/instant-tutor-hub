@@ -272,9 +272,6 @@ export default function TeacherProfile() {
                   <BookOpen className="mr-2 h-5 w-5" />
                   Matières enseignées
                 </CardTitle>
-                <CardDescription>
-                  Les matières que vous enseignez et leurs niveaux
-                </CardDescription>
               </CardHeader>
               <CardContent>
                 {isEditing ? (
@@ -359,23 +356,16 @@ export default function TeacherProfile() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-6">
-                    <div className="flex items-center mb-4">
-                      <BookOpen className="h-5 w-5 text-muted-foreground mr-2" />
-                      <span className="text-sm text-muted-foreground">
-                        Les matières que vous enseignez et leurs niveaux
-                      </span>
-                    </div>
-                    
+                  <div className="space-y-4">
                     {profile.subjects.map((subject, index) => (
-                      <div key={index} className="space-y-3">
-                        <h3 className="text-lg font-semibold text-gray-900">{subject.name}</h3>
+                      <div key={index} className="space-y-2">
+                        <h3 className="text-base font-semibold text-gray-900">{subject.name}</h3>
                         <div className="flex flex-wrap gap-2">
                           {subject.levels.map(level => (
                             <Badge 
                               key={level} 
                               variant="outline" 
-                              className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 border-gray-300"
+                              className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 border-gray-300"
                             >
                               {level}
                             </Badge>

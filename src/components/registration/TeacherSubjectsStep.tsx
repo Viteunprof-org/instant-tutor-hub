@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import { ArrowLeft } from 'lucide-react';
 import ProgressBar from './ProgressBar';
 
@@ -93,45 +94,69 @@ export default function TeacherSubjectsStep({
         <ProgressBar currentStep={2} totalSteps={4} />
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-3">
-          <Label className="text-base font-medium">Matières enseignées</Label>
-          <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-            {SUBJECTS.map((subject) => (
-              <div key={subject} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`subject-${subject}`}
-                  checked={data.subjects.includes(subject)}
-                  onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
-                />
-                <Label
-                  htmlFor={`subject-${subject}`}
-                  className="text-sm font-normal cursor-pointer"
-                >
-                  {subject}
-                </Label>
+        {/* Aperçu des sélections */}
+        {data.subjects.length > 0 && (
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            {data.subjects.map((subject) => (
+              <div key={subject} className="space-y-2">
+                <h3 className="text-base font-semibold text-gray-900">{subject}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {data.levels.map(level => (
+                    <Badge 
+                      key={level} 
+                      variant="outline" 
+                      className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300"
+                    >
+                      {level}
+                    </Badge>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
-        </div>
+        )}
+        
+        <div className="space-y-4">
+          <div>
+            <Label className="text-base font-medium mb-3 block">Matières enseignées</Label>
+            <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
+              {SUBJECTS.map((subject) => (
+                <div key={subject} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`subject-${subject}`}
+                    checked={data.subjects.includes(subject)}
+                    onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
+                  />
+                  <Label
+                    htmlFor={`subject-${subject}`}
+                    className="text-sm font-normal cursor-pointer"
+                  >
+                    {subject}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <div className="space-y-3">
-          <Label className="text-base font-medium">Niveaux enseignés</Label>
-          <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-            {LEVELS.map((level) => (
-              <div key={level} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`level-${level}`}
-                  checked={data.levels.includes(level)}
-                  onCheckedChange={(checked) => handleLevelChange(level, checked as boolean)}
-                />
-                <Label
-                  htmlFor={`level-${level}`}
-                  className="text-sm font-normal cursor-pointer"
-                >
-                  {level}
-                </Label>
-              </div>
-            ))}
+          <div>
+            <Label className="text-base font-medium mb-3 block">Niveaux enseignés</Label>
+            <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+              {LEVELS.map((level) => (
+                <div key={level} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`level-${level}`}
+                    checked={data.levels.includes(level)}
+                    onCheckedChange={(checked) => handleLevelChange(level, checked as boolean)}
+                  />
+                  <Label
+                    htmlFor={`level-${level}`}
+                    className="text-sm font-normal cursor-pointer"
+                  >
+                    {level}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
