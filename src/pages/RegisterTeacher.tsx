@@ -17,8 +17,7 @@ interface FormData {
   confirmPassword: string;
   // Teacher specific fields
   teacherType?: 'student-teacher' | 'professional-teacher';
-  subjects?: string[];
-  levels?: string[];
+  subjects?: { name: string; levels: string[] }[];
   whatsappNumber?: string;
   idDocument?: File | null;
   addressProof?: File | null;
@@ -36,7 +35,6 @@ export default function RegisterTeacher() {
     password: '',
     confirmPassword: '',
     subjects: [],
-    levels: [],
     whatsappNumber: '',
     idDocument: null,
     addressProof: null,
@@ -46,7 +44,7 @@ export default function RegisterTeacher() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleDataChange = (field: string, value: string | string[] | File | null) => {
+  const handleDataChange = (field: string, value: string | { name: string; levels: string[] }[] | File | null) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -66,7 +64,7 @@ export default function RegisterTeacher() {
 
   const validateTeacherSubjects = () => {
     return formData.subjects && formData.subjects.length > 0 && 
-           formData.levels && formData.levels.length > 0;
+           formData.subjects.every(subject => subject.levels.length > 0);
   };
 
   const validateTeacherContact = () => {
@@ -135,8 +133,7 @@ export default function RegisterTeacher() {
       {step === 'teacher-subjects' && (
         <TeacherSubjectsStep
           data={{
-            subjects: formData.subjects || [],
-            levels: formData.levels || []
+            subjects: formData.subjects || []
           }}
           onDataChange={handleDataChange}
           onNext={() => setStep('teacher-contact')}

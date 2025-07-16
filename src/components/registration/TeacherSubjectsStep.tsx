@@ -9,10 +9,9 @@ import ProgressBar from './ProgressBar';
 
 interface TeacherSubjectsStepProps {
   data: {
-    subjects: string[];
-    levels: string[];
+    subjects: { name: string; levels: string[] }[];
   };
-  onDataChange: (field: string, value: string[]) => void;
+  onDataChange: (field: string, value: { name: string; levels: string[] }[]) => void;
   onNext: () => void;
   onBack: () => void;
   isValid: boolean;
@@ -58,18 +57,29 @@ export default function TeacherSubjectsStep({
   onBack, 
   isValid 
 }: TeacherSubjectsStepProps) {
+  const [selectedSubject, setSelectedSubject] = useState<string>('');
+
   const handleSubjectChange = (subject: string, checked: boolean) => {
-    const newSubjects = checked 
-      ? [...data.subjects, subject]
-      : data.subjects.filter(s => s !== subject);
-    onDataChange('subjects', newSubjects);
+    if (checked) {
+      const newSubjects = [...data.subjects, { name: subject, levels: [] }];
+      onDataChange('subjects', newSubjects);
+    } else {
+      const newSubjects = data.subjects.filter(s => s.name !== subject);
+      onDataChange('subjects', newSubjects);
+    }
   };
 
-  const handleLevelChange = (level: string, checked: boolean) => {
-    const newLevels = checked 
-      ? [...data.levels, level]
-      : data.levels.filter(l => l !== level);
-    onDataChange('levels', newLevels);
+  const handleLevelChange = (subjectName: string, level: string, checked: boolean) => {
+    const newSubjects = data.subjects.map(subject => {
+      if (subject.name === subjectName) {
+        const newLevels = checked
+          ? [...subject.levels, level]
+          : subject.levels.filter(l => l !== level);
+        return { ...subject, levels: newLevels };
+      }
+      return subject;
+    });
+    onDataChange('subjects', newSubjects);
   };
 
   return (
@@ -98,10 +108,10 @@ export default function TeacherSubjectsStep({
         {data.subjects.length > 0 && (
           <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
             {data.subjects.map((subject) => (
-              <div key={subject} className="space-y-2">
-                <h3 className="text-base font-semibold text-gray-900">{subject}</h3>
+              <div key={subject.name} className="space-y-2">
+                <h3 className="text-base font-semibold text-gray-900">{subject.name}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {data.levels.map(level => (
+                  {subject.levels.map(level => (
                     <Badge 
                       key={level} 
                       variant="outline" 
@@ -116,7 +126,7 @@ export default function TeacherSubjectsStep({
           </div>
         )}
         
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <Label className="text-base font-medium mb-3 block">Matières enseignées</Label>
             <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
@@ -124,7 +134,7 @@ export default function TeacherSubjectsStep({
                 <div key={subject} className="flex items-center space-x-2">
                   <Checkbox
                     id={`subject-${subject}`}
-                    checked={data.subjects.includes(subject)}
+                    checked={data.subjects.some(s => s.name === subject)}
                     onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
                   />
                   <Label
@@ -138,26 +148,35 @@ export default function TeacherSubjectsStep({
             </div>
           </div>
 
-          <div>
-            <Label className="text-base font-medium mb-3 block">Niveaux enseignés</Label>
-            <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-              {LEVELS.map((level) => (
-                <div key={level} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`level-${level}`}
-                    checked={data.levels.includes(level)}
-                    onCheckedChange={(checked) => handleLevelChange(level, checked as boolean)}
-                  />
-                  <Label
-                    htmlFor={`level-${level}`}
-                    className="text-sm font-normal cursor-pointer"
-                  >
-                    {level}
-                  </Label>
-                </div>
-              ))}
+          {data.subjects.length > 0 && (
+            <div>
+              <Label className="text-base font-medium mb-3 block">Niveaux pour chaque matière</Label>
+              <div className="space-y-4">
+                {data.subjects.map((subject) => (
+                  <div key={subject.name} className="p-3 border rounded-lg">
+                    <h4 className="text-sm font-medium mb-2">{subject.name}</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {LEVELS.map((level) => (
+                        <div key={level} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`${subject.name}-${level}`}
+                            checked={subject.levels.includes(level)}
+                            onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
+                          />
+                          <Label
+                            htmlFor={`${subject.name}-${level}`}
+                            className="text-xs font-normal cursor-pointer"
+                          >
+                            {level}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="flex justify-between pt-4">
