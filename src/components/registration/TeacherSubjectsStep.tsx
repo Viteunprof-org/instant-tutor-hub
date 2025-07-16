@@ -42,8 +42,9 @@ const LEVELS = [
   'Seconde',
   'Première',
   'Terminale',
-  'Post-Bac',
 ];
+
+const ALL_LEVELS_OPTION = 'Tous les niveaux';
 
 export default function TeacherSubjectsStep({ 
   data, 
@@ -67,14 +68,25 @@ export default function TeacherSubjectsStep({
   const handleLevelChange = (subjectName: string, level: string, checked: boolean) => {
     const newSubjects = data.subjects.map(subject => {
       if (subject.name === subjectName) {
-        const newLevels = checked
-          ? [...subject.levels, level]
-          : subject.levels.filter(l => l !== level);
-        return { ...subject, levels: newLevels };
+        if (level === ALL_LEVELS_OPTION) {
+          // Si on clique sur "Tous les niveaux", sélectionner/désélectionner tous les niveaux
+          const newLevels = checked ? [...LEVELS] : [];
+          return { ...subject, levels: newLevels };
+        } else {
+          // Gestion normale pour un niveau spécifique
+          const newLevels = checked
+            ? [...subject.levels, level]
+            : subject.levels.filter(l => l !== level);
+          return { ...subject, levels: newLevels };
+        }
       }
       return subject;
     });
     onDataChange('subjects', newSubjects);
+  };
+
+  const areAllLevelsSelected = (subject: { name: string; levels: string[] }) => {
+    return LEVELS.every(level => subject.levels.includes(level));
   };
 
   return (
@@ -106,15 +118,24 @@ export default function TeacherSubjectsStep({
               <div key={subject.name} className="space-y-2">
                 <h3 className="text-base font-semibold text-gray-900">{subject.name}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {subject.levels.map(level => (
+                  {areAllLevelsSelected(subject) ? (
                     <Badge 
-                      key={level} 
                       variant="outline" 
-                      className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300"
+                      className="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700"
                     >
-                      {level}
+                      Tous les niveaux
                     </Badge>
-                  ))}
+                  ) : (
+                    subject.levels.map(level => (
+                      <Badge 
+                        key={level} 
+                        variant="outline" 
+                        className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300"
+                      >
+                        {level}
+                      </Badge>
+                    ))
+                  )}
                 </div>
               </div>
             ))}
@@ -150,22 +171,40 @@ export default function TeacherSubjectsStep({
                 {data.subjects.map((subject) => (
                   <div key={subject.name} className="p-3 border rounded-lg">
                     <h4 className="text-sm font-medium mb-2">{subject.name}</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {LEVELS.map((level) => (
-                        <div key={level} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`${subject.name}-${level}`}
-                            checked={subject.levels.includes(level)}
-                            onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
-                          />
-                          <Label
-                            htmlFor={`${subject.name}-${level}`}
-                            className="text-xs font-normal cursor-pointer"
-                          >
-                            {level}
-                          </Label>
-                        </div>
-                      ))}
+                    <div className="space-y-3">
+                      {/* Option "Tous les niveaux" */}
+                      <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded border border-blue-200">
+                        <Checkbox
+                          id={`${subject.name}-${ALL_LEVELS_OPTION}`}
+                          checked={areAllLevelsSelected(subject)}
+                          onCheckedChange={(checked) => handleLevelChange(subject.name, ALL_LEVELS_OPTION, checked as boolean)}
+                        />
+                        <Label
+                          htmlFor={`${subject.name}-${ALL_LEVELS_OPTION}`}
+                          className="text-sm font-medium cursor-pointer text-blue-700"
+                        >
+                          {ALL_LEVELS_OPTION}
+                        </Label>
+                      </div>
+                      
+                      {/* Niveaux individuels */}
+                      <div className="grid grid-cols-2 gap-2">
+                        {LEVELS.map((level) => (
+                          <div key={level} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${subject.name}-${level}`}
+                              checked={subject.levels.includes(level)}
+                              onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
+                            />
+                            <Label
+                              htmlFor={`${subject.name}-${level}`}
+                              className="text-xs font-normal cursor-pointer"
+                            >
+                              {level}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
