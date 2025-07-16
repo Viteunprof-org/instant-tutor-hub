@@ -29,12 +29,6 @@ export function ProfileCompletionBanner() {
             <Progress value={completionPercentage} className="h-2" />
           </div>
 
-          {missingFields.length > 0 && (
-            <p className="text-xs text-amber-700 mb-3">
-              Champs manquants : {missingFields.join(', ')}
-            </p>
-          )}
-
           <Button asChild size="sm" className="bg-amber-600 hover:bg-amber-700 text-white">
             <Link to="/teacher/profile" className="flex items-center">
               Compléter mon profil

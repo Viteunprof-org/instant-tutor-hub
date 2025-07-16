@@ -108,9 +108,6 @@ export default function TeacherDashboard() {
         />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Profile completion banner */}
-        <ProfileCompletionBanner />
-
         {/* Welcome section */}
         <div className="mb-8">
           <div>
@@ -122,6 +119,9 @@ export default function TeacherDashboard() {
             </p>
           </div>
         </div>
+
+        {/* Profile completion banner */}
+        <ProfileCompletionBanner />
 
         {/* Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
