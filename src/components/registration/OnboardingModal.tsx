@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { User, BookOpen, Heart, Calendar, Bell, ArrowRight } from 'lucide-react';
+import { User, BookOpen, Heart, Calendar, Bell, ArrowRight, Users, Zap, Star } from 'lucide-react';
 
 interface OnboardingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userType: 'student' | 'parent';
+  userType: 'student' | 'parent' | 'teacher';
 }
 
 const studentOnboardingSteps = [
@@ -129,9 +129,67 @@ const parentOnboardingSteps = [
   note?: string;
 }>;
 
+const teacherOnboardingSteps = [
+  {
+    title: "Votre plateforme d'enseignement",
+    icon: <BookOpen className="w-8 h-8 text-vup-yellow" />,
+    content: [
+      {
+        icon: <Bell className="w-6 h-6 text-vup-yellow" />,
+        title: "Recevez des demandes",
+        description: "Les étudiants font des demandes de cours et vous êtes notifié instantanément sur WhatsApp."
+      },
+      {
+        icon: <Zap className="w-6 h-6 text-vup-yellow" />,
+        title: "Répondez rapidement",
+        description: "Acceptez ou refusez les demandes selon votre disponibilité. Plus vous répondez vite, plus vous êtes visible."
+      },
+      {
+        icon: <Users className="w-6 h-6 text-vup-yellow" />,
+        title: "Donnez vos cours",
+        description: "Connectez-vous en visio et aidez l'étudiant à résoudre son problème en temps réel."
+      }
+    ]
+  },
+  {
+    title: "Optimisez vos revenus",
+    icon: <Star className="w-8 h-8 text-vup-yellow" />,
+    content: [
+      {
+        icon: <Calendar className="w-6 h-6 text-vup-yellow" />,
+        title: "Disponibilité flexible",
+        description: "Activez/désactivez votre disponibilité quand vous le souhaitez. Enseignez selon votre emploi du temps."
+      },
+      {
+        icon: <Star className="w-6 h-6 text-vup-yellow" />,
+        title: "Gagnez la confiance",
+        description: "Les étudiants vous notent après chaque cours. De bonnes notes augmentent votre visibilité et vos revenus."
+      },
+      {
+        icon: <Heart className="w-6 h-6 text-vup-yellow" />,
+        title: "Support dédié",
+        description: "Notre équipe est là pour vous accompagner. En cas de problème technique ou autre, contactez-nous."
+      }
+    ]
+  }
+] as Array<{
+  title: string;
+  icon: JSX.Element;
+  content: Array<{
+    icon: JSX.Element;
+    title: string;
+    description: string;
+  }>;
+  note?: string;
+}>;
+
 export default function OnboardingModal({ isOpen, onClose, userType }: OnboardingModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = userType === 'student' ? studentOnboardingSteps : parentOnboardingSteps;
+  const steps = userType === 'student' 
+    ? studentOnboardingSteps 
+    : userType === 'parent' 
+    ? parentOnboardingSteps 
+    : teacherOnboardingSteps;
   const isLastStep = currentStep === steps.length - 1;
 
   const handleNext = () => {

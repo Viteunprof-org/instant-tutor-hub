@@ -359,13 +359,24 @@ export default function TeacherProfile() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-6">
+                    <div className="flex items-center mb-4">
+                      <BookOpen className="h-5 w-5 text-muted-foreground mr-2" />
+                      <span className="text-sm text-muted-foreground">
+                        Les matières que vous enseignez et leurs niveaux
+                      </span>
+                    </div>
+                    
                     {profile.subjects.map((subject, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                        <div className="font-medium text-sm mb-2">{subject.name}</div>
-                        <div className="flex flex-wrap gap-1">
+                      <div key={index} className="space-y-3">
+                        <h3 className="text-lg font-semibold text-gray-900">{subject.name}</h3>
+                        <div className="flex flex-wrap gap-2">
                           {subject.levels.map(level => (
-                            <Badge key={level} variant="outline" className="text-xs">
+                            <Badge 
+                              key={level} 
+                              variant="outline" 
+                              className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 border-gray-300"
+                            >
                               {level}
                             </Badge>
                           ))}

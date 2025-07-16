@@ -329,7 +329,7 @@ export default function TeacherDashboard() {
     <OnboardingModal
       isOpen={showOnboarding}
       onClose={handleOnboardingComplete}
-      userType="student" // Teachers don't have parent/student distinction for onboarding
+      userType="teacher"
     />
     </>
   );
