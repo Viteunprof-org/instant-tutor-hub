@@ -89,9 +89,7 @@ const getMissingFields = (user: any) => {
 };
 
 export default function TeacherProfile() {
-  const { user: originalUser, setUser } = useAuth();
-  // Temporairement marquer l'utilisateur comme vérifié pour test
-  const user = originalUser ? { ...originalUser, isVerified: true, verificationDate: new Date().toISOString() } : null;
+  const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const [editedProfile, setEditedProfile] = useState({
@@ -106,8 +104,8 @@ export default function TeacherProfile() {
     experience: user?.experience || '',
     education: user?.education || '',
     whatsappNumber: user?.whatsappNumber || '',
-    isVerified: true, // Temporairement mis à true pour test
-    verificationDate: new Date().toISOString() // Date actuelle pour test
+    isVerified: user?.isVerified || false,
+    verificationDate: user?.verificationDate || ''
   });
 
   const completionPercentage = useMemo(() => calculateProfileCompletion(user), [user]);
