@@ -171,9 +171,9 @@ export default function TeacherSubjectsStep({
                 {data.subjects.map((subject) => (
                   <div key={subject.name} className="p-3 border rounded-lg">
                     <h4 className="text-sm font-medium mb-2">{subject.name}</h4>
-                    <div className="space-y-3">
-                      {/* Option "Tous les niveaux" */}
-                      <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded border border-blue-200">
+                    <div className="grid grid-cols-2 gap-2">
+                      {/* Option "Tous les niveaux" en premier */}
+                      <div className="flex items-center space-x-2 col-span-2">
                         <Checkbox
                           id={`${subject.name}-${ALL_LEVELS_OPTION}`}
                           checked={areAllLevelsSelected(subject)}
@@ -181,30 +181,28 @@ export default function TeacherSubjectsStep({
                         />
                         <Label
                           htmlFor={`${subject.name}-${ALL_LEVELS_OPTION}`}
-                          className="text-sm font-medium cursor-pointer text-blue-700"
+                          className="text-xs font-normal cursor-pointer"
                         >
                           {ALL_LEVELS_OPTION}
                         </Label>
                       </div>
                       
                       {/* Niveaux individuels */}
-                      <div className="grid grid-cols-2 gap-2">
-                        {LEVELS.map((level) => (
-                          <div key={level} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`${subject.name}-${level}`}
-                              checked={subject.levels.includes(level)}
-                              onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
-                            />
-                            <Label
-                              htmlFor={`${subject.name}-${level}`}
-                              className="text-xs font-normal cursor-pointer"
-                            >
-                              {level}
-                            </Label>
-                          </div>
-                        ))}
-                      </div>
+                      {LEVELS.map((level) => (
+                        <div key={level} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`${subject.name}-${level}`}
+                            checked={subject.levels.includes(level)}
+                            onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
+                          />
+                          <Label
+                            htmlFor={`${subject.name}-${level}`}
+                            className="text-xs font-normal cursor-pointer"
+                          >
+                            {level}
+                          </Label>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
