@@ -1,138 +1,161 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft } from 'lucide-react';
-import ProgressBar from './ProgressBar';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft } from "lucide-react";
+import ProgressBar from "./ProgressBar";
+import { apiService } from "../../services/api";
+
+interface Matter {
+  id: number;
+  name: string;
+}
+
+interface Level {
+  id: number;
+  name: string;
+}
 
 interface TeacherSubjectsStepProps {
   data: {
-    subjects: { name: string; levels: string[] }[];
+    matters: { id: number; levels: number[] }[];
   };
-  onDataChange: (field: string, value: { name: string; levels: string[] }[]) => void;
+  onDataChange: (field: string, value: { id: number; levels: number[] }[]) => void;
   onNext: () => void;
   onBack: () => void;
   isValid: boolean;
 }
 
-const SUBJECTS = [
-  'Mathématiques',
-  'Français',
-  'Anglais',
-  'Espagnol',
-  'Allemand',
-  'Histoire-Géographie',
-  'Sciences Physiques',
-  'SVT',
-  'Philosophie',
-  'Économie',
-  'Informatique',
-  'Arts plastiques',
-  'Musique',
-  'EPS',
-];
+const ALL_LEVELS_OPTION = "Tous les niveaux";
 
-const LEVELS = [
-  '6ème',
-  '5ème',
-  '4ème', 
-  '3ème',
-  'Seconde',
-  'Première',
-  'Terminale',
-];
+export default function TeacherSubjectsStep({ data, onDataChange, onNext, onBack, isValid }: TeacherSubjectsStepProps) {
+  const [matters, setMatters] = useState<Matter[]>([]);
+  const [levels, setLevels] = useState<Level[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const ALL_LEVELS_OPTION = 'Tous les niveaux';
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [mattersResponse, levelsResponse] = await Promise.all([apiService.getMatters(), apiService.getLevels()]);
+        console.log("Fetched matters:", mattersResponse);
+        if (mattersResponse.success && mattersResponse.data) {
+          setMatters(mattersResponse.data);
+        }
 
-export default function TeacherSubjectsStep({ 
-  data, 
-  onDataChange, 
-  onNext, 
-  onBack, 
-  isValid 
-}: TeacherSubjectsStepProps) {
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
+        if (levelsResponse.success && levelsResponse.data) {
+          setLevels(levelsResponse.data);
+        }
+      } catch (err) {
+        setError("Erreur lors du chargement des données");
+        console.error("Error fetching matters and levels:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleSubjectChange = (subject: string, checked: boolean) => {
+    fetchData();
+  }, []);
+
+  const handleMatterChange = (matterId: number, checked: boolean) => {
     if (checked) {
-      const newSubjects = [...data.subjects, { name: subject, levels: [] }];
-      onDataChange('subjects', newSubjects);
+      const newMatters = [...data.matters, { id: matterId, levels: [] }];
+      onDataChange("matters", newMatters);
     } else {
-      const newSubjects = data.subjects.filter(s => s.name !== subject);
-      onDataChange('subjects', newSubjects);
+      const newMatters = data.matters.filter((m) => m.id !== matterId);
+      onDataChange("matters", newMatters);
     }
   };
 
-  const handleLevelChange = (subjectName: string, level: string, checked: boolean) => {
-    const newSubjects = data.subjects.map(subject => {
-      if (subject.name === subjectName) {
-        if (level === ALL_LEVELS_OPTION) {
+  const handleLevelChange = (matterId: number, levelId: number | string, checked: boolean) => {
+    const newMatters = data.matters.map((matter) => {
+      if (matter.id === matterId) {
+        if (levelId === ALL_LEVELS_OPTION) {
           // Si on clique sur "Tous les niveaux", sélectionner/désélectionner tous les niveaux
-          const newLevels = checked ? [...LEVELS] : [];
-          return { ...subject, levels: newLevels };
+          const newLevels = checked ? levels.map((level) => level.id) : [];
+          return { ...matter, levels: newLevels };
         } else {
           // Gestion normale pour un niveau spécifique
-          const newLevels = checked
-            ? [...subject.levels, level]
-            : subject.levels.filter(l => l !== level);
-          return { ...subject, levels: newLevels };
+          const newLevels = checked ? [...matter.levels, levelId as number] : matter.levels.filter((l) => l !== levelId);
+          return { ...matter, levels: newLevels };
         }
       }
-      return subject;
+      return matter;
     });
-    onDataChange('subjects', newSubjects);
+    onDataChange("matters", newMatters);
   };
 
-  const areAllLevelsSelected = (subject: { name: string; levels: string[] }) => {
-    return LEVELS.every(level => subject.levels.includes(level));
+  const areAllLevelsSelected = (matter: { id: number; levels: number[] }) => {
+    return levels.every((level) => matter.levels.includes(level.id));
   };
+
+  const getMatterName = (matterId: number) => {
+    return matters.find((m) => m.id === matterId)?.name || "";
+  };
+
+  const getLevelName = (levelId: number) => {
+    return levels.find((l) => l.id === levelId)?.name || "";
+  };
+
+  if (loading) {
+    return (
+      <Card className="w-full max-w-md h-[90vh] flex flex-col">
+        <CardContent className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+            <p className="text-sm text-muted-foreground">Chargement...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="w-full max-w-md h-[90vh] flex flex-col">
+        <CardContent className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-sm text-red-600 mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()} variant="outline">
+              Réessayer
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full max-w-md h-[90vh] flex flex-col">
       <CardHeader className="flex-shrink-0">
         <div className="flex items-center space-x-2 mb-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="p-1"
-          >
+          <Button variant="ghost" size="sm" onClick={onBack} className="p-1">
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm font-medium text-muted-foreground">
-            viteunprof
-          </span>
+          <span className="text-sm font-medium text-muted-foreground">viteunprof</span>
         </div>
-        <CardTitle className="text-center text-xl">
-          Matières et niveaux
-        </CardTitle>
+        <CardTitle className="text-center text-xl">Matières et niveaux</CardTitle>
         <ProgressBar currentStep={2} totalSteps={4} />
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto space-y-6 px-6">
         {/* Aperçu des sélections */}
-        {data.subjects.length > 0 && (
+        {data.matters.length > 0 && (
           <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-            {data.subjects.map((subject) => (
-              <div key={subject.name} className="space-y-2">
-                <h3 className="text-base font-semibold text-gray-900">{subject.name}</h3>
+            {data.matters.map((matter) => (
+              <div key={matter.id} className="space-y-2">
+                <h3 className="text-base font-semibold text-gray-900">{getMatterName(matter.id)}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {areAllLevelsSelected(subject) ? (
-                    <Badge 
-                      variant="outline" 
-                      className="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700"
-                    >
+                  {areAllLevelsSelected(matter) ? (
+                    <Badge variant="outline" className="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700">
                       Tous les niveaux
                     </Badge>
                   ) : (
-                    subject.levels.map(level => (
-                      <Badge 
-                        key={level} 
-                        variant="outline" 
-                        className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300"
-                      >
-                        {level}
+                    matter.levels.map((levelId) => (
+                      <Badge key={levelId} variant="outline" className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300">
+                        {getLevelName(levelId)}
                       </Badge>
                     ))
                   )}
@@ -141,65 +164,56 @@ export default function TeacherSubjectsStep({
             ))}
           </div>
         )}
-        
+
         <div className="space-y-6">
           <div>
             <Label className="text-base font-medium mb-3 block">Matières enseignées</Label>
             <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-              {SUBJECTS.map((subject) => (
-                <div key={subject} className="flex items-center space-x-2">
+              {matters.map((matter) => (
+                <div key={matter.id} className="flex items-center space-x-2">
                   <Checkbox
-                    id={`subject-${subject}`}
-                    checked={data.subjects.some(s => s.name === subject)}
-                    onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
+                    id={`matter-${matter.id}`}
+                    checked={data.matters.some((m) => m.id === matter.id)}
+                    onCheckedChange={(checked) => handleMatterChange(matter.id, checked as boolean)}
                   />
-                  <Label
-                    htmlFor={`subject-${subject}`}
-                    className="text-sm font-normal cursor-pointer"
-                  >
-                    {subject}
+                  <Label htmlFor={`matter-${matter.id}`} className="text-sm font-normal cursor-pointer">
+                    {matter.name}
                   </Label>
                 </div>
               ))}
             </div>
           </div>
 
-          {data.subjects.length > 0 && (
+          {data.matters.length > 0 && (
             <div>
               <Label className="text-base font-medium mb-3 block">Niveaux pour chaque matière</Label>
               <div className="space-y-4">
-                {data.subjects.map((subject) => (
-                  <div key={subject.name} className="p-3 border rounded-lg">
-                    <h4 className="text-sm font-medium mb-2">{subject.name}</h4>
+                {data.matters.map((matter) => (
+                  <div key={matter.id} className="p-3 border rounded-lg">
+                    <h4 className="text-sm font-medium mb-2">{getMatterName(matter.id)}</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {/* Niveaux individuels */}
-                      {LEVELS.map((level) => (
-                        <div key={level} className="flex items-center space-x-2">
+                      {levels.map((level) => (
+                        <div key={level.id} className="flex items-center space-x-2">
                           <Checkbox
-                            id={`${subject.name}-${level}`}
-                            checked={subject.levels.includes(level)}
-                            onCheckedChange={(checked) => handleLevelChange(subject.name, level, checked as boolean)}
+                            id={`${matter.id}-${level.id}`}
+                            checked={matter.levels.includes(level.id)}
+                            onCheckedChange={(checked) => handleLevelChange(matter.id, level.id, checked as boolean)}
                           />
-                          <Label
-                            htmlFor={`${subject.name}-${level}`}
-                            className="text-xs font-normal cursor-pointer"
-                          >
-                            {level}
+                          <Label htmlFor={`${matter.id}-${level.id}`} className="text-xs font-normal cursor-pointer">
+                            {level.name}
                           </Label>
                         </div>
                       ))}
-                      
-                      {/* Option "Tous les niveaux" en face de Terminale */}
+
+                      {/* Option "Tous les niveaux" */}
                       <div className="flex items-center space-x-2">
                         <Checkbox
-                          id={`${subject.name}-${ALL_LEVELS_OPTION}`}
-                          checked={areAllLevelsSelected(subject)}
-                          onCheckedChange={(checked) => handleLevelChange(subject.name, ALL_LEVELS_OPTION, checked as boolean)}
+                          id={`${matter.id}-${ALL_LEVELS_OPTION}`}
+                          checked={areAllLevelsSelected(matter)}
+                          onCheckedChange={(checked) => handleLevelChange(matter.id, ALL_LEVELS_OPTION, checked as boolean)}
                         />
-                        <Label
-                          htmlFor={`${subject.name}-${ALL_LEVELS_OPTION}`}
-                          className="text-xs font-normal cursor-pointer"
-                        >
+                        <Label htmlFor={`${matter.id}-${ALL_LEVELS_OPTION}`} className="text-xs font-normal cursor-pointer">
                           {ALL_LEVELS_OPTION}
                         </Label>
                       </div>
@@ -211,7 +225,7 @@ export default function TeacherSubjectsStep({
           )}
         </div>
       </CardContent>
-      
+
       <div className="flex justify-between p-6 pt-4 border-t flex-shrink-0">
         <Button variant="outline" onClick={onBack}>
           Retour

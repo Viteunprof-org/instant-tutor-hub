@@ -362,7 +362,7 @@ export default function RequestLesson() {
             </Card>
 
             {/* Pack selection (optionnel) */}
-            {/* {packs.length > 0 && (
+            {packs.length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -391,7 +391,7 @@ export default function RequestLesson() {
                   </div>
                 </CardContent>
               </Card>
-            )} */}
+            )}
 
             {/* Summary and submit */}
             {selectedMatterObj && selectedLevelObj && description.trim() && (

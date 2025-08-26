@@ -92,19 +92,27 @@ export default function RegisterStudent() {
     }
 
     try {
-      let phone = null;
-      if (userType === "student") {
-        phone = formData.parentPhone;
-      }
-      console.log(formData);
-      const user = {
-        ...formData,
-        type: "student",
-        phone: phone,
-        levels: [null],
+      // Préparer les données pour l'API
+      const firstName = formData.firstName;
+      const lastName = formData.lastName;
+
+      // Données additionnelles pour l'API
+      const additionalData = {
+        phone: formData.parentPhone,
+        parentPhone: formData.parentPhone,
+        referrer: formData.referrer || null,
+        levels: [null], // À remplir si nécessaire
       };
 
-      await register(user);
+      await register(
+        formData.email,
+        formData.password,
+        firstName,
+        lastName,
+        "student", // Toujours créer un compte étudiant
+        userType, // Qui a créé le compte (student ou parent)
+        additionalData
+      );
 
       toast({
         title: "Inscription réussie",

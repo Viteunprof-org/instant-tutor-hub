@@ -3,23 +3,14 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  type: 'student' | 'teacher';
-  parentType?: 'student' | 'parent'; // For students: who registered them
-  avatar?: string;
+  type: "student" | "teacher" | "professional";
   createdAt: Date;
-  credits?: number; // Student credits (1 credit = 1 euro)
-  
-  // Additional profile fields for teachers
+  creditBalance?: number;
+  freeCreditBalance?: number;
   phone?: string;
   school?: string;
-  graduationYear?: string;
-  subjects?: { name: string; levels: string[] }[];
-  biography?: string;
-  experience?: string;
-  education?: string;
-  whatsappNumber?: string;
+  parrentPhone?: string;
   isVerified?: boolean;
-  verificationDate?: string;
 }
 
 export interface Subject {
@@ -35,8 +26,8 @@ export interface LessonRequest {
   subjectId: string;
   duration: number; // in minutes
   description: string;
-  urgency: 'low' | 'medium' | 'high';
-  status: 'pending' | 'matched' | 'in-progress' | 'completed' | 'cancelled';
+  urgency: "low" | "medium" | "high";
+  status: "pending" | "matched" | "in-progress" | "completed" | "cancelled";
   createdAt: Date;
   scheduledAt?: Date;
   teacherId?: string;
@@ -62,10 +53,45 @@ export interface Lesson {
   teacherId: string;
   subjectId: string;
   duration: number;
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  status: "scheduled" | "in-progress" | "completed" | "cancelled";
   startTime: Date;
   endTime: Date;
   meetingUrl?: string;
   rating?: number;
   feedback?: string;
+}
+
+export interface CourseDetails {
+  id: number;
+  description: string;
+  accepted: boolean;
+  cancelled: boolean;
+  completed: boolean;
+  teacherId?: number;
+  matter: {
+    id: number;
+    name: string;
+  };
+  level: {
+    id: number;
+    name: string;
+  };
+  teacher?: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  student: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+
+  meetingId: number;
+  meetingPwd: string;
+  duration: number;
+  studentSign: string;
+  teacherSign: string;
 }
