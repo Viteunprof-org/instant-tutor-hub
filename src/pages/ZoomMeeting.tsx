@@ -13,9 +13,9 @@ import { useAuth } from "@/contexts/AuthContext";
 
 // ZoomMtg.preLoadWasm();
 // ZoomMtg.prepareWebSDK();
-
 // const sdkKey = import.meta.env.VITE_ZOOM_SDK_KEY;
-const leaveUrl = "http://localhost:8080";
+
+const leaveUrl = import.meta.env.VITE_FRONTEND_URL;
 
 export default function ZoomMeeting() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -70,6 +70,7 @@ export default function ZoomMeeting() {
       leaveUrl: leaveUrl,
       patchJsMedia: true,
       leaveOnPageUnload: true,
+      // lang: 'fr-FR',
       success: (success) => {
         setupZoomEvents();
         console.log(success);
@@ -81,7 +82,6 @@ export default function ZoomMeeting() {
           userEmail: userEmail,
           success: (success) => {
             setMeetingStatus("in-meeting");
-            // setupZoomEvents();
             console.log(success);
           },
           error: (error) => {
@@ -93,8 +93,6 @@ export default function ZoomMeeting() {
         console.log(error);
       },
     });
-
-    // setupZoomEvents();
   }
 
   console.log(isInitialized);
@@ -110,6 +108,7 @@ export default function ZoomMeeting() {
           console.log("🚀 Initialisation paresseuse...");
           // ZoomMtg.preLoadWasm();
           // ZoomMtg.prepareWebSDK();
+          ZoomMtg.i18n.load("fr-FR");
           setIsInitialized(true);
           console.log("✅ Initialisation paresseuse terminée");
         } catch (error) {
@@ -282,11 +281,11 @@ export default function ZoomMeeting() {
                   )}
 
                   {/* Informations sur le client View */}
-                  <div className="mt-4 text-xs text-gray-500 text-center bg-gray-50 p-3 rounded">
+                  {/* <div className="mt-4 text-xs text-gray-500 text-center bg-gray-50 p-3 rounded">
                     <p>• Mode: Client View (fenêtre Zoom séparée)</p>
                     <p>• Rôle: {isTeacher ? "Professeur (Hôte)" : "Étudiant (Participant)"}</p>
                     <p>• Toutes les fonctionnalités Zoom sont disponibles</p>
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
             </div>

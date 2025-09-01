@@ -86,12 +86,12 @@ export default function BasicInfoStep({ userType, data, onDataChange, onNext, on
 
         <div className="space-y-2">
           <Label htmlFor="parentPhone">
-            Numéro de téléphone +33 <span className="text-muted-foreground">(facultatif)</span>
+            Numéro de téléphone +33 <span className="text-muted-foreground"></span>
           </Label>
           <Input
             id="parentPhone"
             type="tel"
-            placeholder="06 12 34 56 78"
+            placeholder="+33 6 12 34 56 78"
             value={data.parentPhone}
             onChange={(e) => onDataChange("parentPhone", e.target.value)}
           />

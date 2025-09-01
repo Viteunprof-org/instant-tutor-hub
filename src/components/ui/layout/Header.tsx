@@ -85,12 +85,12 @@ export function Header({ isAvailable, onAvailabilityChange, isVerified = true }:
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer" asChild>
+                  {/* <DropdownMenuItem className="cursor-pointer" asChild>
                     <Link to={user.type === "teacher" ? "/teacher/profile" : "/student/profile"} className="flex items-center w-full">
                       <User className="mr-2 h-4 w-4" />
                       Profil
                     </Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="cursor-pointer" onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />

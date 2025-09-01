@@ -58,6 +58,7 @@ export default function RegisterStudent() {
       formData.lastName.trim() &&
       formData.email.trim() &&
       formData.confirmEmail.trim() &&
+      formData.parentPhone.trim() &&
       formData.email === formData.confirmEmail &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
     );
