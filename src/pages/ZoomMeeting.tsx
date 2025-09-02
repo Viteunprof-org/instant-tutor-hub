@@ -48,7 +48,8 @@ export default function ZoomMeeting() {
       console.log("✅ le user a quitter");
 
       console.log(data);
-      alert("Hello");
+      apiService.endCourse(Number(courseId));
+      // alert("Hello");
       // setMeetingStatus("connected");
     });
   };
