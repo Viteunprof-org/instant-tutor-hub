@@ -155,6 +155,10 @@ class ApiService {
     return this.request(`/courses/end-course/${courseId}`);
   }
 
+  async cancelCourse(courseId: number): Promise<ApiResponse<any>> {
+    return this.request(`/courses/cancel-course/${courseId}`);
+  }
+
   async uploadFile(file: File, field: string, courseId?: number): Promise<ApiResponse<any>> {
     const user = localStorage.getItem("vup-user");
 

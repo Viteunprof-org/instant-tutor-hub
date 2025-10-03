@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,7 +101,8 @@ export default function TeacherContactStep({ data, onDataChange, onNext, onBack,
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription className="text-xs">
-              Les notifications de cours seront envoyées sur WhatsApp avec des liens directs pour rejoindre les sessions.
+              Les notifications de cours seront envoyées sur WhatsApp pour vous informer qu’un élève a demandé un cours dans l’une des matières que
+              vous dispensez.
             </AlertDescription>
           </Alert>
         </div>

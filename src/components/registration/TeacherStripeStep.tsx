@@ -12,7 +12,7 @@ interface TeacherStripeStepProps {
     adress: string;
     postalCode: string;
     city: string;
-    birthDate?: string;
+    birthDate: string;
   };
   onDataChange: (field: string, value: string) => void;
   onNext: () => void;
@@ -72,7 +72,10 @@ export default function TeacherStripeStep({ data, onDataChange, onNext, onBack, 
     }
 
     // Validation des champs requis
-    if (!processedValue && field !== "birthDate") {
+    if (
+      !processedValue
+      // && field !== "birthDate"
+    ) {
       newErrors[field] = "Ce champ est requis";
     } else if (processedValue && field !== "iban" && field !== "postalCode") {
       delete newErrors[field];
@@ -169,7 +172,7 @@ export default function TeacherStripeStep({ data, onDataChange, onNext, onBack, 
           {/* Date de naissance */}
           <div className="space-y-2">
             <Label htmlFor="birthDate" className="text-sm font-medium">
-              Date de naissance
+              Date de naissance <span className="text-red-500">*</span>
             </Label>
             <Input
               id="birthDate"
@@ -178,7 +181,7 @@ export default function TeacherStripeStep({ data, onDataChange, onNext, onBack, 
               onChange={(e) => handleInputChange("birthDate", e.target.value)}
               max={new Date().toISOString().split("T")[0]} // Pas de date future
             />
-            <p className="text-xs text-muted-foreground">Optionnel - peut être requis par certains prestataires de paiement</p>
+            <p className="text-xs text-muted-foreground">Requis par notre prestataire de paiement</p>
           </div>
 
           {/* Information de sécurité */}

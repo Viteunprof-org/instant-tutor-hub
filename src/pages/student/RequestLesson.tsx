@@ -171,7 +171,7 @@ export default function RequestLesson() {
 
       toast({
         title: "Demande de cours envoyée !",
-        description: "Nous vous contacterons bientôt avec des professeurs disponibles.",
+        description: "Nous contactons les professeurs disponibles dans ta matière.",
       });
 
       // navigate("/student/dashboard");

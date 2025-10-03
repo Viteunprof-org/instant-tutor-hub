@@ -101,10 +101,10 @@ export default function PaymentPage() {
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Retour
               </Button>
-              <Button variant="outline" onClick={() => console.log(selectedPack, clientSecret)} className="flex items-center">
+              {/* <Button variant="outline" onClick={() => console.log(selectedPack, clientSecret)} className="flex items-center">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Show pack
-              </Button>
+              </Button> */}
             </div>
 
             {selectedPack && (

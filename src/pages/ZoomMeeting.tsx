@@ -71,6 +71,7 @@ export default function ZoomMeeting() {
       leaveUrl: leaveUrl,
       patchJsMedia: true,
       leaveOnPageUnload: true,
+      disableZoomLogo: true,
       // lang: 'fr-FR',
       success: (success) => {
         setupZoomEvents();

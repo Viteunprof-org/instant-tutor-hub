@@ -94,7 +94,9 @@ export default function RegisterTeacher() {
   };
 
   const validateTeacherStripe = () => {
-    return Boolean(formData.iban?.trim() && formData.adress?.trim() && formData.postalCode?.trim() && formData.city?.trim());
+    return Boolean(
+      formData.iban?.trim() && formData.adress?.trim() && formData.postalCode?.trim() && formData.city?.trim() && formData.birthDate?.trim()
+    );
   };
 
   const validatePassword = () => {

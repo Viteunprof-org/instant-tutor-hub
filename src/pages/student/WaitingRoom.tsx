@@ -104,7 +104,7 @@ export default function WaitingRoom() {
   const cancelCourse = async () => {
     try {
       // Ici vous pouvez ajouter un appel API pour annuler le cours
-      // await apiService.cancelCourse(Number(courseId));
+      await apiService.cancelCourse(Number(courseId));
 
       toast({
         title: "Demande annulée",
