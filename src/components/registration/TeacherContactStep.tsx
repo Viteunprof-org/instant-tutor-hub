@@ -28,6 +28,10 @@ interface TeacherContactStepProps {
 
 export default function TeacherContactStep({ data, onDataChange, onNext, onBack, isValid }: TeacherContactStepProps) {
   const [uploadingFiles, setUploadingFiles] = useState<Record<string, boolean>>({});
+  const [fileInputKeys, setFileInputKeys] = useState<Record<string, number>>({
+    id: 0,
+    "home-certificate": 0,
+  });
 
   const handleFileChange = async (field: "id" | "home-certificate", event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -73,6 +77,8 @@ export default function TeacherContactStep({ data, onDataChange, onNext, onBack,
   const removeFile = (field: "id" | "home-certificate") => {
     const newFiles = data.files.filter((f) => f.field !== field);
     onDataChange("files", newFiles);
+
+    setFileInputKeys((prev) => ({ ...prev, [field]: prev[field] + 1 }));
   };
 
   return (
@@ -112,6 +118,7 @@ export default function TeacherContactStep({ data, onDataChange, onNext, onBack,
           <Label htmlFor="idDocument">Pièce d'identité *</Label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <input
+              key={fileInputKeys["id"]}
               id="idDocument"
               type="file"
               accept="image/*,.pdf"
@@ -145,6 +152,7 @@ export default function TeacherContactStep({ data, onDataChange, onNext, onBack,
           <Label htmlFor="addressProof">Justificatif de domicile *</Label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <input
+              key={fileInputKeys["home-certificate"]}
               id="addressProof"
               type="file"
               accept="image/*,.pdf"
