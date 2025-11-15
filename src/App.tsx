@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
+//import Index from "./pages/Index";
 import Login from "./pages/Login";
 import RegisterStudent from "./pages/RegisterStudent";
 import RegisterTeacher from "./pages/RegisterTeacher";
@@ -48,7 +48,7 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={user ? <Navigate to={user.type === "student" ? "/student/dashboard" : "/teacher/dashboard"} replace /> : <Index />} />
+      <Route path="/" element={user ? <Navigate to={user.type === "student" ? "/student/dashboard" : "/teacher/dashboard"} replace /> : <Login />} />
       <Route
         path="/login"
         element={user ? <Navigate to={user.type === "student" ? "/student/dashboard" : "/teacher/dashboard"} replace /> : <Login />}

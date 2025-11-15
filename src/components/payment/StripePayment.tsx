@@ -102,6 +102,16 @@ function CheckoutForm({ clientSecret, onSuccess, onError, amount, packName, cred
                   type: "tabs",
                   defaultCollapsed: false,
                 },
+                terms: {
+                  card: "never",
+                  googlePay: "never",
+                  applePay: "never",
+                  paypal: "never",
+                },
+                wallets: {
+                  applePay: "never",
+                  googlePay: "never",
+                },
               }}
             />
           </div>
