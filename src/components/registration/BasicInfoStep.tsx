@@ -32,9 +32,7 @@ export default function BasicInfoStep({ userType, data, onDataChange, onNext, on
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex items-center space-x-1">
-            <span className="text-2xl font-bold text-vup-navy">vite</span>
-            <span className="text-2xl font-bold text-vup-yellow">un</span>
-            <span className="text-2xl font-bold text-vup-navy">prof</span>
+            <img src="/logo.svg" className="w-48" />
           </div>
           <div className="w-8"></div>
         </div>

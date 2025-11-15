@@ -22,9 +22,7 @@ export function Header({ isAvailable, onAvailabilityChange, isVerified = true }:
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-vup-navy">vite</span>
-              <span className="text-2xl font-bold text-vup-yellow">un</span>
-              <span className="text-2xl font-bold text-vup-navy">prof</span>
+              <img src="/logo.svg" className="w-48" />
             </div>
           </Link>
 
