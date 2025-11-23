@@ -203,6 +203,10 @@ class ApiService {
       return { success: false, error: error instanceof Error ? error.message : "Upload failed" };
     }
   }
+
+  async getDiscount(code: string): Promise<ApiResponse<any>> {
+    return this.request(`/discount/${code}`);
+  }
 }
 
 // Créer une instance unique
