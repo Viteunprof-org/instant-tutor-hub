@@ -329,7 +329,7 @@ export default function StudentDashboard() {
           {/* Welcome section */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Bonjour {user?.firstName} ! 👋</h1>
-            <p className="text-gray-600">Prêt pour votre prochain cours ? Trouvez un professeur en 30 secondes.</p>
+            <p className="text-gray-600">Prêt pour ton prochain cours ? Trouves un professeur en 30 secondes.</p>
           </div>
 
           {/* Quick action avec vérification des crédits */}
@@ -340,8 +340,8 @@ export default function StudentDashboard() {
                   <h2 className="text-2xl font-bold text-vup-navy mb-2">Besoin d'aide maintenant ?</h2>
                   <p className="text-vup-navy/80 mb-4">
                     {user?.creditBalance && user.creditBalance > 0
-                      ? "Trouvez un professeur disponible instantanément"
-                      : "Rechargez vos crédits pour commencer à prendre des cours"}
+                      ? "Trouves un professeur disponible instantanément"
+                      : "Recharges tes crédits pour commencer à prendre des cours"}
                   </p>
                   <Button onClick={handleTakeCourse} className="bg-vup-navy text-white hover:bg-vup-navy/90">
                     <Zap className="mr-2 h-4 w-4" />
@@ -351,7 +351,7 @@ export default function StudentDashboard() {
                 {user?.creditBalance !== undefined && user.creditBalance <= 0 && (
                   <div className="text-right">
                     <p className="text-vup-navy font-semibold">Crédits: {user.creditBalance}</p>
-                    <p className="text-vup-navy/70 text-sm">Rechargez pour continuer</p>
+                    <p className="text-vup-navy/70 text-sm">Recharges pour continuer</p>
                   </div>
                 )}
               </div>
@@ -372,13 +372,13 @@ export default function StudentDashboard() {
                   <Calendar className="mr-2 h-5 w-5" />
                   Cours à venir
                 </CardTitle>
-                <CardDescription>Vos prochains cours programmés</CardDescription>
+                <CardDescription>Tes prochains cours programmés</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8 text-gray-500">
                   <Calendar className="mx-auto h-12 w-12 mb-4" />
                   <p className="mb-2">Cette fonctionnalité arrive bientôt !</p>
-                  <p className="text-sm">Vous pourrez prochainement réserver votre cours à l'avance</p>
+                  <p className="text-sm">Tu pourras prochainement réserver ton cours à l'avance</p>
                   <Button onClick={handleTakeCourse} className="mt-4" variant="outline">
                     <Plus className="mr-2 h-4 w-4" />
                     Prendre un cours maintenant
@@ -394,7 +394,7 @@ export default function StudentDashboard() {
                   <BookOpen className="mr-2 h-5 w-5" />
                   Cours récents
                 </CardTitle>
-                <CardDescription>Vos derniers cours terminés</CardDescription>
+                <CardDescription>Tes derniers cours terminés</CardDescription>
               </CardHeader>
               <CardContent>
                 {isLoadingRecentCourses ? (
@@ -430,7 +430,7 @@ export default function StudentDashboard() {
                     <p>Aucun cours terminé</p>
                     <Button onClick={handleTakeCourse} className="mt-4" variant="outline">
                       <Plus className="mr-2 h-4 w-4" />
-                      Prendre votre premier cours
+                      Prendre ton premier cours
                     </Button>
                   </div>
                 )}
