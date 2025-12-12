@@ -26,12 +26,12 @@ export default function TeacherTypeStep({ onSelectType, onBack }: TeacherTypeSte
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={() => onSelectType("teacher")} className="w-full h-12 bg-teal-400 hover:bg-teal-500 text-white font-medium">
-          Professeur étudiant
+          Devenir professeur
         </Button>
 
-        <Button onClick={() => onSelectType("professional")} className="w-full h-12 bg-slate-800 hover:bg-slate-900 text-white font-medium">
+        {/* <Button onClick={() => onSelectType("professional")} className="w-full h-12 bg-slate-800 hover:bg-slate-900 text-white font-medium">
           Professionnel de l'enseignement
-        </Button>
+        </Button> */}
 
         <div className="mt-6 text-center text-sm space-y-2">
           <Link to="/login?type=teacher" className="text-accent hover:underline block">
