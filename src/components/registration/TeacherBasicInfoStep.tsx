@@ -69,16 +69,16 @@ export default function TeacherBasicInfoStep({ type, data, onDataChange, onNext,
             type="email"
             value={data.email}
             onChange={(e) => onDataChange("email", e.target.value)}
-            placeholder={isStudentTeacher ? "votre.email@ecole.fr" : "votre.email@institution.fr"}
+            placeholder={isStudentTeacher ? "jean.dupont@exemple.fr" : "jean.dupont@exemple.fr"}
           />
-          {showEmailWarning && (
+          {/* {showEmailWarning && (
             <Alert className="mt-2">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription className="text-sm">
                 Veuillez utiliser une adresse email universitaire ou académique. Les adresses Gmail, Outlook, etc. ne sont pas acceptées.
               </AlertDescription>
             </Alert>
-          )}
+          )} */}
         </div>
 
         <div className="space-y-2">
