@@ -20,6 +20,7 @@ import ZoomMeeting from "./pages/ZoomMeeting";
 import PaymentPage from "./pages/student/PaymentPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "./lib/stripe";
+import { Analytics } from "@vercel/analytics/react";
 
 function ProtectedRoute({ children, requiredUserType }: { children: React.ReactNode; requiredUserType?: "student" | "teacher" }) {
   const { user, isLoading } = useAuth();
@@ -166,6 +167,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <Analytics />
           <AuthProvider>
             <AppRoutes />
           </AuthProvider>
