@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import ProgressBar from "./ProgressBar";
+import { useState } from "react";
 
 interface BasicInfoStepProps {
   userType: "student" | "parent";
@@ -24,6 +25,22 @@ export default function BasicInfoStep({ userType, data, onDataChange, onNext, on
   const title = userType === "parent" ? "Vos informations" : "Vos informations";
   const subtitle = userType === "parent" ? "Entrez vos informations personnelles" : "Entrez vos informations personnelles";
 
+  const [phoneTouched, setPhoneTouched] = useState(false);
+
+  const isPhoneValid = data.parentPhone.replace(/\s/g, "").length === 10 && /^0\d{9}$/.test(data.parentPhone.replace(/\s/g, ""));
+
+  const handlePhoneChange = (value: string) => {
+    // Permettre uniquement les chiffres
+    const digitsOnly = value.replace(/\D/g, "");
+
+    // Limiter à 10 chiffres
+    const limited = digitsOnly.slice(0, 10);
+
+    // Formater avec des espaces : 06 12 34 56 78
+    const formatted = limited.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
+
+    onDataChange("parentPhone", formatted);
+  };
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
@@ -83,16 +100,26 @@ export default function BasicInfoStep({ userType, data, onDataChange, onNext, on
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="parentPhone">
-            Numéro de téléphone +33 <span className="text-muted-foreground"></span>
-          </Label>
-          <Input
-            id="parentPhone"
-            type="tel"
-            placeholder="+33 6 12 34 56 78"
-            value={data.parentPhone}
-            onChange={(e) => onDataChange("parentPhone", e.target.value)}
-          />
+          <Label htmlFor="parentPhone">Numéro de téléphone</Label>
+          <div className="flex">
+            <div className="flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md text-sm text-gray-600">+33</div>
+            <Input
+              id="parentPhone"
+              type="tel"
+              placeholder="06 12 34 56 78"
+              value={data.parentPhone}
+              onChange={(e) => handlePhoneChange(e.target.value)}
+              onBlur={() => setPhoneTouched(true)}
+              className={`rounded-l-none ${
+                phoneTouched && !isPhoneValid && data.parentPhone.length > 0
+                  ? "border-red-300 focus:border-red-500"
+                  : isPhoneValid
+                  ? "border-green-300 focus:border-green-500"
+                  : ""
+              }`}
+            />
+          </div>
+          {phoneTouched && !isPhoneValid && data.parentPhone.length > 0 && <p className="text-xs text-red-500">Format attendu : 06 12 34 56 78</p>}
         </div>
         <Button onClick={onNext} disabled={!isValid} className="w-full bg-vup-navy text-white hover:bg-vup-navy/90">
           Suivant

@@ -138,7 +138,8 @@ export default function StudentDashboard() {
 
   // Fonction pour prendre un cours (vérifier les crédits)
   const handleTakeCourse = () => {
-    if (!user?.creditBalance || user.creditBalance <= 0) {
+    const totalCredits = (user?.creditBalance || 0) + (user?.freeCreditBalance || 0);
+    if (totalCredits <= 0) {
       // Rediriger vers la page de paiement si pas assez de crédits
       navigate("/student/payment");
     } else {
@@ -191,7 +192,7 @@ export default function StudentDashboard() {
               <Wallet className="h-8 w-8 text-green-500 mr-3" />
               <div>
                 <p className="text-sm font-medium text-gray-600">Crédits restants</p>
-                <p className="text-2xl font-bold">{user?.creditBalance + user.freeCreditBalance || 0}</p>
+                <p className="text-2xl font-bold">{(user?.creditBalance || 0) + (user?.freeCreditBalance || 0)}</p>
               </div>
             </div>
           </CardContent>
@@ -333,27 +334,30 @@ export default function StudentDashboard() {
           </div>
 
           {/* Quick action avec vérification des crédits */}
+          {/* Quick action avec vérification des crédits */}
           <Card className="mb-8 bg-gradient-to-r from-vup-yellow via-yellow-400 to-vup-yellow border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-vup-navy mb-2">Besoin d'aide maintenant ?</h2>
                   <p className="text-vup-navy/80 mb-4">
-                    {user?.creditBalance && user.creditBalance > 0
-                      ? "Trouves un professeur disponible instantanément"
-                      : "Recharges tes crédits pour commencer à prendre des cours"}
+                    {(user?.creditBalance || 0) + (user?.freeCreditBalance || 0) > 0
+                      ? "Trouve un professeur disponible instantanément"
+                      : "Recharge tes crédits pour commencer à prendre des cours"}
                   </p>
                   <Button onClick={handleTakeCourse} className="bg-vup-navy text-white hover:bg-vup-navy/90">
                     <Zap className="mr-2 h-4 w-4" />
-                    {user?.creditBalance && user.creditBalance > 0 ? "Prendre un cours maintenant" : "Recharger mes crédits"}
+                    {(user?.creditBalance || 0) + (user?.freeCreditBalance || 0) > 0 ? "Prendre un cours maintenant" : "Recharger mes crédits"}
                   </Button>
                 </div>
-                {user?.creditBalance !== undefined && user.creditBalance <= 0 && (
-                  <div className="text-right">
-                    <p className="text-vup-navy font-semibold">Crédits: {user.creditBalance}</p>
-                    <p className="text-vup-navy/70 text-sm">Recharges pour continuer</p>
-                  </div>
-                )}
+
+                {/* Toujours afficher les crédits */}
+                <div className="text-right">
+                  <p className="text-vup-navy font-semibold text-2xl">{(user?.creditBalance || 0) + (user?.freeCreditBalance || 0)} crédits</p>
+                  {(user?.creditBalance || 0) + (user?.freeCreditBalance || 0) <= 0 && (
+                    <p className="text-vup-navy/70 text-sm">Recharge pour continuer</p>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
