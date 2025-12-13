@@ -1,5 +1,7 @@
 # Welcome to your Lovable project
 
+Dans cette version nous avons simplifier l'ux de paiement par rapport à la v1.0.0
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/707ed097-4dcf-4e11-bd4e-bca606765ff8
