@@ -21,6 +21,8 @@ import PaymentPage from "./pages/student/PaymentPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "./lib/stripe";
 import { Analytics } from "@vercel/analytics/react";
+import StudentFAQ from "./pages/student/Studentfaq";
+import TeacherFAQ from "./pages/teacher/TeacherFAQ";
 
 function ProtectedRoute({ children, requiredUserType }: { children: React.ReactNode; requiredUserType?: "student" | "teacher" }) {
   const { user, isLoading } = useAuth();
@@ -124,6 +126,14 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/student/faq"
+        element={
+          <ProtectedRoute requiredUserType="student">
+            <StudentFAQ />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Teacher routes */}
       <Route
@@ -148,6 +158,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredUserType="teacher">
             <ZoomMeeting />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/teacher/faq"
+        element={
+          <ProtectedRoute requiredUserType="teacher">
+            <TeacherFAQ />
           </ProtectedRoute>
         }
       />

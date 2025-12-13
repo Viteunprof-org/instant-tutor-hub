@@ -63,7 +63,7 @@ export default function TeacherBasicInfoStep({ type, data, onDataChange, onNext,
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">{isStudentTeacher ? "Email de l'école" : "Email académique"}</Label>
+          <Label htmlFor="email">{isStudentTeacher ? "Adresse email" : "Adresse email"}</Label>
           <Input
             id="email"
             type="email"

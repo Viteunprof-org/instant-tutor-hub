@@ -53,17 +53,20 @@ export default function RegisterStudent() {
   };
 
   const validateBasicInfo = () => {
+    // Validation du téléphone (10 chiffres commençant par 0)
+    const digitsOnly = formData.parentPhone.replace(/\s/g, "");
+    const isPhoneValid = digitsOnly.length === 10 && /^0\d{9}$/.test(digitsOnly);
+
     return (
       formData.firstName.trim() &&
       formData.lastName.trim() &&
       formData.email.trim() &&
       formData.confirmEmail.trim() &&
-      formData.parentPhone.trim() &&
+      isPhoneValid &&
       formData.email === formData.confirmEmail &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
     );
   };
-
   const validatePassword = () => {
     const hasMinLength = formData.password.length >= 8;
     const hasUpperCase = /[A-Z]/.test(formData.password);
@@ -83,25 +86,28 @@ export default function RegisterStudent() {
       return;
     }
 
-    if (!formData.parentPhone.trim()) {
+    // Validation du téléphone
+    const digitsOnly = formData.parentPhone.replace(/\s/g, "");
+    const isPhoneValid = digitsOnly.length === 10 && /^0\d{9}$/.test(digitsOnly);
+
+    if (!isPhoneValid) {
       toast({
         title: "Erreur",
-        description: "Le numéro de téléphone est requis.",
+        description: "Le numéro de téléphone n'est pas valide.",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      let phone = null;
-      if (userType === "student") {
-        phone = formData.parentPhone;
-      }
-      console.log(formData);
+      // Formater le téléphone au format international (+33)
+      const formattedPhone = "+33" + digitsOnly.slice(1);
+
       const user = {
         ...formData,
         type: "student",
-        phone: phone,
+        phone: formattedPhone,
+        parentPhone: formattedPhone,
         levels: [null],
       };
 
@@ -112,7 +118,6 @@ export default function RegisterStudent() {
         description: "Bienvenue sur ViteUnProf !",
       });
 
-      // Show onboarding modal for student/parent flows
       setShowOnboarding(true);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue. Veuillez réessayer.";

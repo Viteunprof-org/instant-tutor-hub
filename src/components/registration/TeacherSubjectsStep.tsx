@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, X, BookOpen } from "lucide-react";
 import ProgressBar from "./ProgressBar";
 import { apiService } from "../../services/api";
 
@@ -28,20 +28,19 @@ interface TeacherSubjectsStepProps {
   isValid: boolean;
 }
 
-const ALL_LEVELS_OPTION = "Tous les niveaux";
-
 export default function TeacherSubjectsStep({ data, onDataChange, onNext, onBack, isValid }: TeacherSubjectsStepProps) {
   const [matters, setMatters] = useState<Matter[]>([]);
   const [levels, setLevels] = useState<Level[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedMatter, setExpandedMatter] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const [mattersResponse, levelsResponse] = await Promise.all([apiService.getMatters(), apiService.getLevels()]);
-        console.log("Fetched matters:", mattersResponse);
+
         if (mattersResponse.success && mattersResponse.data) {
           setMatters(mattersResponse.data);
         }
@@ -60,44 +59,77 @@ export default function TeacherSubjectsStep({ data, onDataChange, onNext, onBack
     fetchData();
   }, []);
 
-  const handleMatterChange = (matterId: number, checked: boolean) => {
-    if (checked) {
-      const newMatters = [...data.matters, { id: matterId, levels: [] }];
-      onDataChange("matters", newMatters);
-    } else {
+  const getSelectedMatter = (matterId: number) => {
+    return data.matters.find((m) => m.id === matterId);
+  };
+
+  const handleMatterToggle = (matterId: number) => {
+    const existing = getSelectedMatter(matterId);
+
+    if (existing) {
+      // Désélectionner la matière
       const newMatters = data.matters.filter((m) => m.id !== matterId);
       onDataChange("matters", newMatters);
+      if (expandedMatter === matterId) {
+        setExpandedMatter(null);
+      }
+    } else {
+      // Sélectionner la matière et ouvrir le panneau des niveaux
+      const newMatters = [...data.matters, { id: matterId, levels: [] }];
+      onDataChange("matters", newMatters);
+      setExpandedMatter(matterId);
     }
   };
 
-  const handleLevelChange = (matterId: number, levelId: number | string, checked: boolean) => {
+  const handleLevelToggle = (matterId: number, levelId: number) => {
     const newMatters = data.matters.map((matter) => {
       if (matter.id === matterId) {
-        if (levelId === ALL_LEVELS_OPTION) {
-          // Si on clique sur "Tous les niveaux", sélectionner/désélectionner tous les niveaux
-          const newLevels = checked ? levels.map((level) => level.id) : [];
-          return { ...matter, levels: newLevels };
-        } else {
-          // Gestion normale pour un niveau spécifique
-          const newLevels = checked ? [...matter.levels, levelId as number] : matter.levels.filter((l) => l !== levelId);
-          return { ...matter, levels: newLevels };
-        }
+        const hasLevel = matter.levels.includes(levelId);
+        const newLevels = hasLevel ? matter.levels.filter((l) => l !== levelId) : [...matter.levels, levelId];
+        return { ...matter, levels: newLevels };
       }
       return matter;
     });
     onDataChange("matters", newMatters);
   };
 
-  const areAllLevelsSelected = (matter: { id: number; levels: number[] }) => {
-    return levels.every((level) => matter.levels.includes(level.id));
+  const handleSelectAllLevels = (matterId: number) => {
+    const matter = getSelectedMatter(matterId);
+    if (!matter) return;
+
+    const allSelected = levels.every((level) => matter.levels.includes(level.id));
+    const newMatters = data.matters.map((m) => {
+      if (m.id === matterId) {
+        return {
+          ...m,
+          levels: allSelected ? [] : levels.map((l) => l.id),
+        };
+      }
+      return m;
+    });
+    onDataChange("matters", newMatters);
+  };
+
+  const getLevelName = (levelId: number) => {
+    return levels.find((l) => l.id === levelId)?.name || "";
   };
 
   const getMatterName = (matterId: number) => {
     return matters.find((m) => m.id === matterId)?.name || "";
   };
 
-  const getLevelName = (levelId: number) => {
-    return levels.find((l) => l.id === levelId)?.name || "";
+  const removeMatter = (matterId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newMatters = data.matters.filter((m) => m.id !== matterId);
+    onDataChange("matters", newMatters);
+    if (expandedMatter === matterId) {
+      setExpandedMatter(null);
+    }
+  };
+
+  const removeLevel = (matterId: number, levelId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleLevelToggle(matterId, levelId);
   };
 
   if (loading) {
@@ -130,7 +162,7 @@ export default function TeacherSubjectsStep({ data, onDataChange, onNext, onBack
 
   return (
     <Card className="w-full max-w-md h-[90vh] flex flex-col">
-      <CardHeader className="flex-shrink-0">
+      <CardHeader className="flex-shrink-0 pb-2">
         <div className="flex items-center space-x-2 mb-2">
           <Button variant="ghost" size="sm" onClick={onBack} className="p-1">
             <ArrowLeft className="h-4 w-4" />
@@ -138,99 +170,171 @@ export default function TeacherSubjectsStep({ data, onDataChange, onNext, onBack
           <span className="text-sm font-medium text-muted-foreground">viteunprof</span>
         </div>
         <CardTitle className="text-center text-xl">Matières et niveaux</CardTitle>
+        <p className="text-center text-sm text-muted-foreground mt-1">Sélectionnez vos matières puis les niveaux que vous enseignez</p>
         <ProgressBar currentStep={2} totalSteps={4} />
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto space-y-6 px-6">
-        {/* Aperçu des sélections */}
-        {data.matters.length > 0 && (
-          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-            {data.matters.map((matter) => (
-              <div key={matter.id} className="space-y-2">
-                <h3 className="text-base font-semibold text-gray-900">{getMatterName(matter.id)}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {areAllLevelsSelected(matter) ? (
-                    <Badge variant="outline" className="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 border-blue-300 text-blue-700">
-                      Tous les niveaux
-                    </Badge>
-                  ) : (
-                    matter.levels.map((levelId) => (
-                      <Badge key={levelId} variant="outline" className="px-2 py-1 text-xs bg-white hover:bg-gray-100 border-gray-300">
-                        {getLevelName(levelId)}
-                      </Badge>
-                    ))
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
 
-        <div className="space-y-6">
-          <div>
-            <Label className="text-base font-medium mb-3 block">Matières enseignées</Label>
-            <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-              {matters.map((matter) => (
-                <div key={matter.id} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`matter-${matter.id}`}
-                    checked={data.matters.some((m) => m.id === matter.id)}
-                    onCheckedChange={(checked) => handleMatterChange(matter.id, checked as boolean)}
-                  />
-                  <Label htmlFor={`matter-${matter.id}`} className="text-sm font-normal cursor-pointer">
-                    {matter.name}
-                  </Label>
+      <CardContent className="flex-1 overflow-y-auto px-4 pb-2">
+        {/* Résumé des sélections en haut */}
+        {data.matters.length > 0 && (
+          <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <Label className="text-sm font-medium text-blue-900 mb-2 block">
+              Vos sélections ({data.matters.length} matière{data.matters.length > 1 ? "s" : ""})
+            </Label>
+            <div className="space-y-2">
+              {data.matters.map((matter) => (
+                <div key={matter.id} className="flex items-start gap-2">
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shrink-0"
+                    onClick={(e) => removeMatter(matter.id, e)}
+                  >
+                    {getMatterName(matter.id)}
+                    <X className="h-3 w-3 ml-1" />
+                  </Badge>
+                  {matter.levels.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {matter.levels.length === levels.length ? (
+                        <Badge variant="outline" className="text-xs bg-white">
+                          Tous niveaux
+                        </Badge>
+                      ) : (
+                        matter.levels.map((levelId) => (
+                          <Badge
+                            key={levelId}
+                            variant="outline"
+                            className="text-xs bg-white cursor-pointer hover:bg-gray-100"
+                            onClick={(e) => removeLevel(matter.id, levelId, e)}
+                          >
+                            {getLevelName(levelId)}
+                            <X className="h-2 w-2 ml-1" />
+                          </Badge>
+                        ))
+                      )}
+                    </div>
+                  )}
+                  {matter.levels.length === 0 && <span className="text-xs text-amber-600 italic">Sélectionnez des niveaux ↓</span>}
                 </div>
               ))}
             </div>
           </div>
+        )}
 
-          {data.matters.length > 0 && (
-            <div>
-              <Label className="text-base font-medium mb-3 block">Niveaux pour chaque matière</Label>
-              <div className="space-y-4">
-                {data.matters.map((matter) => (
-                  <div key={matter.id} className="p-3 border rounded-lg">
-                    <h4 className="text-sm font-medium mb-2">{getMatterName(matter.id)}</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {/* Niveaux individuels */}
-                      {levels.map((level) => (
-                        <div key={level.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`${matter.id}-${level.id}`}
-                            checked={matter.levels.includes(level.id)}
-                            onCheckedChange={(checked) => handleLevelChange(matter.id, level.id, checked as boolean)}
-                          />
-                          <Label htmlFor={`${matter.id}-${level.id}`} className="text-xs font-normal cursor-pointer">
-                            {level.name}
-                          </Label>
-                        </div>
-                      ))}
+        {/* Liste des matières avec accordéon */}
+        <div className="space-y-2">
+          {matters.map((matter) => {
+            const selected = getSelectedMatter(matter.id);
+            const isExpanded = expandedMatter === matter.id;
+            const allLevelsSelected = selected && levels.every((level) => selected.levels.includes(level.id));
 
-                      {/* Option "Tous les niveaux" */}
-                      <div className="flex items-center space-x-2">
+            return (
+              <div
+                key={matter.id}
+                className={`border rounded-lg overflow-hidden transition-all ${selected ? "border-blue-300 bg-blue-50/50" : "border-gray-200"}`}
+              >
+                {/* En-tête de la matière */}
+                <div
+                  className={`flex items-center justify-between p-3 cursor-pointer ${selected ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                  onClick={() => {
+                    if (selected) {
+                      setExpandedMatter(isExpanded ? null : matter.id);
+                    } else {
+                      handleMatterToggle(matter.id);
+                    }
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      checked={!!selected}
+                      onCheckedChange={() => handleMatterToggle(matter.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="data-[state=checked]:bg-blue-600"
+                    />
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 text-gray-500" />
+                      <span className={`font-medium ${selected ? "text-blue-900" : ""}`}>{matter.name}</span>
+                    </div>
+                  </div>
+
+                  {selected && (
+                    <div className="flex items-center gap-2">
+                      {selected.levels.length > 0 && (
+                        <Badge variant="secondary" className="text-xs">
+                          {selected.levels.length === levels.length
+                            ? "Tous"
+                            : `${selected.levels.length} niveau${selected.levels.length > 1 ? "x" : ""}`}
+                        </Badge>
+                      )}
+                      {isExpanded ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />}
+                    </div>
+                  )}
+                </div>
+
+                {/* Panneau des niveaux (accordéon) */}
+                {selected && isExpanded && (
+                  <div className="p-3 pt-0 border-t border-blue-100 bg-white">
+                    <div className="pt-3">
+                      {/* Bouton "Tous les niveaux" */}
+                      <div
+                        className={`flex items-center gap-2 p-2 rounded-md mb-2 cursor-pointer transition-colors ${
+                          allLevelsSelected ? "bg-blue-100 border border-blue-300" : "bg-gray-50 hover:bg-gray-100 border border-transparent"
+                        }`}
+                        onClick={() => handleSelectAllLevels(matter.id)}
+                      >
                         <Checkbox
-                          id={`${matter.id}-${ALL_LEVELS_OPTION}`}
-                          checked={areAllLevelsSelected(matter)}
-                          onCheckedChange={(checked) => handleLevelChange(matter.id, ALL_LEVELS_OPTION, checked as boolean)}
+                          checked={allLevelsSelected}
+                          onCheckedChange={() => handleSelectAllLevels(matter.id)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="data-[state=checked]:bg-blue-600"
                         />
-                        <Label htmlFor={`${matter.id}-${ALL_LEVELS_OPTION}`} className="text-xs font-normal cursor-pointer">
-                          {ALL_LEVELS_OPTION}
-                        </Label>
+                        <span className="text-sm font-medium">Tous les niveaux</span>
+                      </div>
+
+                      {/* Grille des niveaux individuels */}
+                      <div className="grid grid-cols-2 gap-1">
+                        {levels.map((level) => {
+                          const isLevelSelected = selected.levels.includes(level.id);
+                          return (
+                            <div
+                              key={level.id}
+                              className={`flex items-center gap-2 p-2 rounded cursor-pointer transition-colors ${
+                                isLevelSelected ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50 border border-transparent"
+                              }`}
+                              onClick={() => handleLevelToggle(matter.id, level.id)}
+                            >
+                              <Checkbox
+                                checked={isLevelSelected}
+                                onCheckedChange={() => handleLevelToggle(matter.id, level.id)}
+                                onClick={(e) => e.stopPropagation()}
+                                className="data-[state=checked]:bg-blue-600"
+                              />
+                              <span className="text-sm">{level.name}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
+            );
+          })}
         </div>
+
+        {/* Message d'aide si aucune sélection */}
+        {data.matters.length === 0 && (
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg text-center">
+            <BookOpen className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+            <p className="text-sm text-gray-600">Cliquez sur une matière pour commencer</p>
+          </div>
+        )}
       </CardContent>
 
-      <div className="flex justify-between p-6 pt-4 border-t flex-shrink-0">
+      <div className="flex justify-between p-4 border-t flex-shrink-0 bg-white">
         <Button variant="outline" onClick={onBack}>
           Retour
         </Button>
-        <Button onClick={onNext} disabled={!isValid}>
+        <Button onClick={onNext} disabled={!isValid} className="bg-blue-600 hover:bg-blue-700">
           Suivant
         </Button>
       </div>

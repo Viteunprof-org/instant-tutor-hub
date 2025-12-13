@@ -5,7 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import TeacherTypeStep from "@/components/registration/TeacherTypeStep";
 import TeacherBasicInfoStep from "@/components/registration/TeacherBasicInfoStep";
 import TeacherSubjectsStep from "@/components/registration/TeacherSubjectsStep";
-import TeacherContactPasswordStep from "@/components/registration/TeacherContactPasswordStep";
+import TeacherContactStep from "@/components/registration/TeacherContactStep";
+import TeacherPasswordStep from "@/components/registration/TeacherPasswordStep";
 import TeacherStripeStep from "@/components/registration/TeacherStripeStep";
 
 interface FileData {
@@ -23,17 +24,18 @@ interface FormData {
   type: "teacher" | "professional";
   matters: { id: number; levels: number[] }[];
   phone: string;
-  // iban: string;
-  // adress: string;
-  // postalCode: string;
-  // city: string;
-  // birthDate?: string;
+  iban: string;
+  adress: string;
+  postalCode: string;
+  city: string;
+  birthDate?: string;
   school: string;
-  // files: FileData[];
+  files: FileData[];
 }
 
 export default function RegisterTeacher() {
   const [step, setStep] = useState("teaching");
+  const [userType] = useState<"teacher" | "professional">("teacher");
 
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -45,13 +47,13 @@ export default function RegisterTeacher() {
     type: "teacher",
     matters: [],
     phone: "",
-    // iban: "",
-    // adress: "",
-    // postalCode: "",
-    // city: "",
-    // birthDate: "",
-    school: "DEFAULT_SCHOOL",
-    // files: [],
+    iban: "",
+    adress: "",
+    postalCode: "",
+    city: "",
+    birthDate: "",
+    school: "DEFAULT_SCHOOL", // Replace with actual default school if needed
+    files: [],
   });
 
   const { register, isLoading } = useAuth();
@@ -79,50 +81,60 @@ export default function RegisterTeacher() {
   };
 
   const validateTeacherSubjects = () => {
+    console.log("Validating teacher subjects:", formData);
     return formData.matters && formData.matters.length > 0 && formData.matters.every((subject) => subject.levels.length > 0);
   };
 
-  // const validateTeacherStripe = () => {
-  //   return Boolean(
-  //     formData.iban?.trim() && formData.adress?.trim() && formData.postalCode?.trim() && formData.city?.trim() && formData.birthDate?.trim()
-  //   );
-  // };
+  const validateTeacherContact = () => {
+    const hasPhone = Boolean(formData.phone?.trim());
+    const hasIdDocument = formData.files.some((f) => f.field === "id");
+    const hasAddressProof = formData.files.some((f) => f.field === "home-certificate");
 
-  const validateContactPassword = () => {
-    // Validation du téléphone (format international)
-    const digitsOnly = formData.phone.replace(/\s/g, "");
-    const isPhoneValid = digitsOnly.length === 10 && /^0\d{9}$/.test(digitsOnly);
+    return hasPhone && hasIdDocument && hasAddressProof;
+  };
 
-    // Validation du mot de passe
+  const validateTeacherStripe = () => {
+    return Boolean(
+      formData.iban?.trim() && formData.adress?.trim() && formData.postalCode?.trim() && formData.city?.trim() && formData.birthDate?.trim()
+    );
+  };
+
+  const validatePassword = () => {
     const hasMinLength = formData.password.length >= 8;
     const hasUpperCase = /[A-Z]/.test(formData.password);
     const hasNumberOrSpecial = /[\d\W]/.test(formData.password);
     const passwordsMatch = formData.password === formData.confirmPassword;
 
-    return isPhoneValid && hasMinLength && hasUpperCase && hasNumberOrSpecial && passwordsMatch;
+    return hasMinLength && hasUpperCase && hasNumberOrSpecial && passwordsMatch;
   };
 
   const handleSubmit = async () => {
-    if (!validateContactPassword()) {
+    if (!validatePassword()) {
       toast({
         title: "Erreur",
-        description: "Veuillez vérifier vos informations.",
+        description: "Veuillez vérifier les exigences du mot de passe.",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      const digitsOnly = formData.phone.replace(/\s/g, "");
-      const formattedPhone = "+33" + digitsOnly.slice(1);
+      // Prepare additional data for teacher registration
+      // const additionalData = {
+      //   phone: formData.phone,
+      //   matters: formData.matters,
+      //   type: formData.type,
+      //   iban: formData.iban,
+      //   adress: formData.adress,
+      //   postalCode: formData.postalCode,
+      //   city: formData.city,
+      //   birthDate: formData.birthDate,
+      //   files: formData.files,
+      // };
+
       console.log("Submitting registration with data:", formData);
 
-      const dataToSubmit = {
-        ...formData,
-        phone: formattedPhone,
-      };
-
-      await register(dataToSubmit);
+      await register(formData);
 
       toast({
         title: "Inscription réussie",
@@ -141,10 +153,8 @@ export default function RegisterTeacher() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-vup-navy via-primary to-vup-navy flex items-center justify-center p-4">
-      {/* Étape 1: Type d'enseignant */}
       {step === "teaching" && <TeacherTypeStep onSelectType={handleTeacherTypeSelect} onBack={() => navigate("/register")} />}
 
-      {/* Étape 2: Informations de base */}
       {step === "teacher-basic-info" && (
         <TeacherBasicInfoStep
           type={formData.type!}
@@ -156,21 +166,32 @@ export default function RegisterTeacher() {
         />
       )}
 
-      {/* Étape 3: Matières et niveaux */}
       {step === "teacher-matters" && (
         <TeacherSubjectsStep
           data={{
             matters: formData.matters || [],
           }}
           onDataChange={handleDataChange}
-          onNext={() => setStep("teacher-contact-password")}
+          onNext={() => setStep("teacher-contact")}
           onBack={() => setStep("teacher-basic-info")}
           isValid={validateTeacherSubjects()}
         />
       )}
 
-      {/* Étape 4: Informations bancaires (Stripe) */}
-      {/* {step === "teacher-stripe" && (
+      {step === "teacher-contact" && (
+        <TeacherContactStep
+          data={{
+            phone: formData.phone || "",
+            files: formData.files || [],
+          }}
+          onDataChange={handleDataChange}
+          onNext={() => setStep("teacher-stripe")}
+          onBack={() => setStep("teacher-matters")}
+          isValid={validateTeacherContact()}
+        />
+      )}
+
+      {step === "teacher-stripe" && (
         <TeacherStripeStep
           data={{
             iban: formData.iban || "",
@@ -180,24 +201,22 @@ export default function RegisterTeacher() {
             birthDate: formData.birthDate || "",
           }}
           onDataChange={handleDataChange}
-          onNext={() => setStep("teacher-contact-password")}
-          onBack={() => setStep("teacher-matters")}
+          onNext={() => setStep("teacher-password")}
+          onBack={() => setStep("teacher-contact")}
           isValid={validateTeacherStripe()}
         />
-      )} */}
+      )}
 
-      {/* Étape 5: Contact (WhatsApp) + Mot de passe */}
-      {step === "teacher-contact-password" && (
-        <TeacherContactPasswordStep
+      {step === "teacher-password" && (
+        <TeacherPasswordStep
           data={{
-            phone: formData.phone || "",
             password: formData.password,
             confirmPassword: formData.confirmPassword,
           }}
           onDataChange={handleDataChange}
           onSubmit={handleSubmit}
-          onBack={() => setStep("teacher-matters")}
-          isValid={validateContactPassword()}
+          onBack={() => setStep("teacher-stripe")}
+          isValid={validatePassword()}
           isLoading={isLoading}
         />
       )}
